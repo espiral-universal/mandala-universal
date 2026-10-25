@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Mandala interativa dos co-benefícios das zonas úmidas — Wetlands Co-Benefits Project / 1st Blue Carbon & Wetlands Co-benefits Conference, Bragança 2026.">
+<meta name="theme-color" content="#06141d">
+<meta property="og:title" content="Mandala dos Co-benefícios">
+<meta property="og:description" content="Uma jornada contemplativa pelo sol, a maré, o manguezal e os 13 co-benefícios das zonas úmidas.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2306141d'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%23e0b060' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='11' fill='none' stroke='%235ba3b0' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23f2eada'/%3E%3C/svg%3E">
+<style>body{margin:0}[hidden]{display:none!important}</style>
+<title>Mandala dos Co-benefícios</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Figtree:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+  /* One deliberate visual world: a night-tide cosmos. Single theme on purpose. */
+  :root{
+    --night:#06141d;      /* ground */
+    --deep:#0c2433;       /* raised ground */
+    --ink:#f2eada;        /* cream text, from the shell */
+    --muted:#9db4bd;      /* tide-grey text */
+    --line:rgba(242,234,218,.16);
+    --gold:#e0b060;       /* the sun */
+    --teal:#5ba3b0;
+    --display:"Marcellus","Cormorant Garamond",Georgia,serif;
+    --body:"Figtree","Segoe UI",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+    background:
+      radial-gradient(ellipse 70% 55% at 22% 18%, rgba(47,111,134,.30), transparent 70%),
+      radial-gradient(ellipse 60% 50% at 85% 88%, rgba(63,111,60,.24), transparent 70%),
+      var(--night);
+    background-attachment:fixed;
+  }
+  #sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+  .app{position:relative;z-index:1;min-height:100%;display:flex;flex-direction:column;padding-inline:20px}
+
+  /* top bar */
+  .top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 20px;padding-block:14px}
+  .brand{display:flex;flex-direction:column;line-height:1.2}
+  .brand-name{font-family:var(--display);font-size:1.12rem;letter-spacing:.01em}
+  .brand-tag{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+  .tools{display:flex;align-items:center;gap:10px}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .seg button{padding:6px 13px;font-size:.78rem;letter-spacing:.08em}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--night)}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  button:focus-visible,.piece:focus-visible,.chip:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .ghost{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.8rem;letter-spacing:.04em;transition:background .3s,border-color .3s}
+  .ghost:hover{border-color:rgba(242,234,218,.45)}
+  .ghost[aria-pressed="true"]{background:rgba(224,176,96,.16);border-color:var(--gold);color:var(--gold)}
+
+  /* stage */
+  .stage{flex:1;display:grid;grid-template-columns:minmax(0,1fr);gap:22px;padding-bottom:28px}
+  .mandala-col{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0}
+  .mandala-wrap{width:min(100%,52dvh,560px);aspect-ratio:1;max-width:100%;border-radius:50%;overflow:hidden;clip-path:circle(50%)}
+  #m{width:100%;height:100%;display:block;overflow:hidden;touch-action:manipulation}
+  .caption{margin:0;min-height:1.7em;font-family:var(--display);font-size:1.05rem;text-align:center;color:var(--ink)}
+  .caption small{font-family:var(--body);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-left:.6em}
+  .views{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+  .legend{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 8px;max-width:560px}
+  .legend-label{flex-basis:100%;text-align:center;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+
+  .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 9px;font-size:.82rem;line-height:1.3;text-align:left;transition:border-color .3s,background .3s}
+  .chip:hover{border-color:rgba(242,234,218,.5);background:rgba(242,234,218,.05)}
+  .chip[aria-pressed="true"]{border-color:var(--ink);background:rgba(242,234,218,.1)}
+  .chip i{flex:none;width:11px;height:11px;border-radius:50%;background:var(--c)}
+
+  /* panel: text on the night, no card */
+  .panel{min-width:0;max-width:34rem;margin-inline:auto;width:100%;display:flex;flex-direction:column;gap:14px}
+  .eyebrow{margin:0;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+  .eyebrow b{font-weight:600;color:var(--c,var(--gold))}
+  .draft{font-size:.62rem;letter-spacing:.16em;border:1px dashed rgba(224,176,96,.7);color:var(--gold);border-radius:4px;padding:1px 6px}
+  .head{display:flex;align-items:center;gap:16px}
+  .thumb{flex:none;width:74px;height:74px;overflow:visible}
+  .panel h1,.panel h2{margin:0;font-family:var(--display);font-weight:400;line-height:1.08;text-wrap:balance}
+  .panel h1{font-size:clamp(2.2rem,5.2vw,3.5rem)}
+  .panel h2{font-size:clamp(1.9rem,4.2vw,2.8rem)}
+  .whisper{margin:0;font-family:var(--display);font-size:1.18rem;line-height:1.35;color:var(--c,var(--gold))}
+  .body{margin:0;color:#dfe6e4;max-width:60ch}
+  .note{margin:0;font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;max-width:60ch}
+  .links-label{margin:6px 0 0;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+  .links{display:flex;flex-wrap:wrap;gap:6px 8px}
+  .nav{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px;padding-top:14px;border-top:1px solid var(--line)}
+  .nav .count{margin-left:auto;font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums}
+  .cta{background:var(--gold);color:#22170a;border-radius:999px;padding:11px 22px;font-weight:600;font-size:.95rem;transition:filter .3s}
+  .cta:hover{filter:brightness(1.1)}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .panel-inner{display:flex;flex-direction:column;gap:14px;animation:rise .7s ease both}
+  @keyframes rise{from{opacity:.0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* mandala pieces */
+  #world{transform-origin:0 0;animation:breathe 10s ease-in-out infinite}
+  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.014)}}
+  .piece{cursor:pointer;stroke:var(--night);stroke-width:3.5;stroke-linejoin:round;transition:opacity .7s ease,filter .5s ease;animation:arrive 1s ease backwards;animation-delay:calc(var(--i)*45ms);outline:none}
+  .piece.shell{stroke-width:2.2}
+  @keyframes arrive{from{opacity:.12}}
+  .piece:hover,.piece.hot{filter:brightness(1.2)}
+  .has-sel .piece{opacity:.26}
+  .has-sel .piece.shell{opacity:.5}
+  .has-sel .piece.linked{opacity:.8}
+  .has-sel .piece.sel{opacity:1;filter:brightness(1.12) drop-shadow(0 0 14px var(--c))}
+  .deco{pointer-events:none;transition:opacity .7s ease}
+  .has-sel .deco{opacity:.3}
+  .ripple{fill:none;stroke:var(--ink);stroke-width:2;pointer-events:none;transform-box:fill-box;transform-origin:center;animation:ripple 1.6s ease-out forwards}
+  @keyframes ripple{from{transform:scale(.2);opacity:.9}to{transform:scale(7);opacity:0}}
+
+  @media (max-width:939px){
+    .stage{display:flex;flex-direction:column;align-items:center;gap:14px}
+    .mandala-col{display:contents}
+    .mandala-wrap{order:1}.caption{order:2}.panel{order:3;margin-bottom:10px}.views{order:4}.legend{order:5}
+  }
+  @media (min-width:940px){
+    html,body{overflow:hidden}
+    .app{height:100%;padding-inline:32px}
+    .stage{grid-template-columns:minmax(0,1.2fr) minmax(340px,30rem);gap:40px;min-height:0;align-items:stretch}
+    .mandala-col{justify-content:center;min-height:0}
+    .mandala-wrap{width:min(100%,calc(100dvh - 235px))}
+    .panel{overflow-y:auto;justify-content:safe center;margin:0;padding-right:6px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+  }
+  @media (prefers-reduced-motion:reduce){
+    #world,.piece,.panel-inner,.ripple{animation:none}
+    .piece,.deco{transition:none}
+  }
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <span class="brand-name">Wetlands Co-Benefits Project</span>
+      <span class="brand-tag">Integration · Nature &amp; People</span>
+    </div>
+    <div class="tools">
+      <button class="ghost" id="sound" type="button" aria-pressed="false"></button>
+      <div class="seg" role="group" aria-label="Idioma / Language">
+        <button type="button" id="lang-pt" aria-pressed="true">PT</button>
+        <button type="button" id="lang-en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </header>
+  <main class="stage">
+    <section class="mandala-col">
+      <div class="mandala-wrap">
+        <svg id="m" viewBox="-520 -520 1040 1040" role="group">
+          <defs><clipPath id="disc"><circle r="480"/></clipPath></defs>
+          <g id="world">
+            <g id="rim" class="deco"></g>
+            <g id="outer" clip-path="url(#disc)"></g>
+            <g id="shell"></g>
+            <g id="fx"></g>
+          </g>
+        </svg>
+      </div>
+      <p class="caption" id="caption" aria-live="polite"></p>
+      <div class="views" id="views"></div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <aside class="panel" id="panel"></aside>
+  </main>
+</div>
+
+<script>
+/* =====================================================================
+   CONTEÚDO — edite aqui. Cada peça tem nome, "sussurro", texto e conexões.
+   Os 13 co-benefícios (cb1…cb13) são um RASCUNHO montado a partir do texto
+   dos domínios no site da conferência; aguardam revisão do time científico.
+   ===================================================================== */
+const DOMAINS = {
+  nature:  {n:1, color:'#5e8f52', pt:{name:'Biodiversidade & Natureza', body:'A integridade do ecossistema: biodiversidade, polinização, produção primária, formação do solo, ciclagem de nutrientes e o caminho das águas. É a base viva de onde nascem todos os outros co-benefícios.'},
+                                   en:{name:'Biodiversity & Nature', body:'The integrity of the ecosystem: biodiversity, pollination, primary production, soil formation, nutrient cycling and the pathways of water. The living ground from which every other co-benefit grows.'}},
+  climate: {n:3, color:'#4f9bb0', pt:{name:'Clima', body:'O papel das zonas úmidas na mitigação e na adaptação climática: o carbono guardado, o carbono em movimento e a proteção da costa — com implicações para planos climáticos nacionais e metas internacionais.'},
+                                   en:{name:'Climate', body:'The role of wetlands in climate mitigation and adaptation: carbon held, carbon in motion and a protected coast — with implications for national climate plans and international targets.'}},
+  economy: {n:2, color:'#ddae5c', pt:{name:'Economia & Produção', body:'O valor econômico do que a zona úmida produz e sustenta: produtos, renda e empregos — e a valoração do carbono e dos demais serviços ecossistêmicos.'},
+                                   en:{name:'Economy & Production', body:'The economic value of what a wetland produces and sustains: products, income and jobs — and the valuation of carbon and other ecosystem services.'}},
+  social:  {n:4, color:'#c97f5e', pt:{name:'Social', body:'Como pescadores artesanais, marisqueiras, proprietários e gestores públicos percebem os co-benefícios e os incorporam em suas decisões — e como isso pode se tornar um indicador mensurável de justiça climática.'},
+                                   en:{name:'Social', body:'How artisanal fishers, shellfish gatherers, landowners and public managers perceive co-benefits and bring them into their decisions — and how that can become a measurable indicator of climate justice.'}}
+};
+
+/* 12 elementos da natureza, em sentido horário a partir do sol (alto, à esquerda) */
+const ELEMENTS = [
+ {id:'sol', color:'#d9a552', bands:0, links:['cb3','mangue','cosmos'],
+  pt:{name:'Sol', whisper:'Tudo o que vive é luz transformada.', body:'Toda a energia do manguezal começa aqui. A luz do sol move a fotossíntese, que transforma o gás carbônico do ar em folhas, troncos e raízes — o primeiro passo do carbono azul.'},
+  en:{name:'Sun', whisper:'Everything alive is light, transformed.', body:'All the energy of the mangrove begins here. Sunlight drives photosynthesis, turning carbon dioxide from the air into leaves, trunks and roots — the first step of blue carbon.'}},
+ {id:'cosmos', color:'#1d4560', bands:0, links:['lua','centro','sol'],
+  pt:{name:'Céu & Estrelas', whisper:'Visto de longe, tudo é um só.', body:'Do espaço, a costa amazônica aparece como uma renda verde entre o rio e o mar. A mandala lembra que o manguezal não é um lugar isolado: é parte de um planeta vivo, de um único sistema.'},
+  en:{name:'Sky & Stars', whisper:'From far enough away, everything is one.', body:'From space, the Amazon coast looks like green lace between river and sea. The mandala is a reminder that a mangrove is never an isolated place: it belongs to one living planet, one system.'}},
+ {id:'lua', color:'#44688a', bands:0, links:['mare','fauna','cb5'],
+  pt:{name:'Lua', whisper:'O ritmo vem de cima.', body:'A lua puxa o oceano e dá o compasso do manguezal. No litoral do Pará — uma costa de macromaré — o mar sobe e desce vários metros, duas vezes por dia, e toda a vida se organiza em torno desse pulso.'},
+  en:{name:'Moon', whisper:'The rhythm comes from above.', body:'The moon pulls the ocean and sets the tempo of the mangrove. On the coast of Pará — a macrotidal coast — the sea rises and falls several metres twice a day, and all life arranges itself around that pulse.'}},
+ {id:'chuva', color:'#7fb4c1', bands:1, links:['rio','cb5','cb4'],
+  pt:{name:'Chuva', whisper:'A água sempre volta.', body:'A chuva amazônica alimenta os rios que descem até o estuário, trazendo água doce, sedimentos e nutrientes. É o encontro da água do céu, do rio e do mar que cria a zona úmida.'},
+  en:{name:'Rain', whisper:'Water always returns.', body:'Amazonian rain feeds the rivers that run down to the estuary, carrying fresh water, sediment and nutrients. A wetland is born where water from the sky, the river and the sea meet.'}},
+ {id:'mangue', color:'#3f6f3c', bands:0, vein:true, links:['raizes','cb1','cb6','cb8'],
+  pt:{name:'Manguezal', whisper:'Uma floresta que aprendeu a viver na maré.', body:'Floresta entre a terra e o mar. A Costa de Manguezais de Macromaré da Amazônia é um dos maiores e mais contínuos sistemas de manguezais do mundo — e Bragança está dentro dela.'},
+  en:{name:'Mangrove forest', whisper:'A forest that learned to live with the tide.', body:'A forest between land and sea. The Amazon Macrotidal Mangrove Coast is one of the largest and most continuous mangrove systems in the world — and Bragança sits inside it.'}},
+ {id:'raizes', color:'#6d8748', bands:0, vein:true, links:['cb8','lama','cb1'],
+  pt:{name:'Raízes', whisper:'Onde há raiz, há abrigo.', body:'As raízes aéreas seguram a lama, quebram a força das ondas e formam um berçário protegido para peixes, camarões e caranguejos jovens.'},
+  en:{name:'Roots', whisper:'Where there are roots, there is shelter.', body:'Aerial roots hold the mud in place, break the force of the waves and form a sheltered nursery for young fish, shrimp and crabs.'}},
+ {id:'fauna', color:'#a8a254', bands:1, links:['cb1','cb2','cb9'],
+  pt:{name:'Vida animal', whisper:'Cada espécie é um fio da teia.', body:'Caranguejo-uçá, guarás, garças, peixes, ostras — e aves migratórias que cruzam continentes para descansar e se alimentar aqui. Juntas, essas vidas mantêm o manguezal funcionando.'},
+  en:{name:'Wildlife', whisper:'Every species is a thread in the web.', body:'Mangrove crabs, scarlet ibis, herons, fish, oysters — and migratory birds that cross continents to rest and feed here. Together these lives keep the mangrove working.'}},
+ {id:'lama', color:'#74492e', bands:2, links:['cb6','cb4','raizes'],
+  pt:{name:'Lama & Solo', whisper:'O tesouro está debaixo dos pés.', body:'No solo encharcado, com pouco oxigênio, a matéria orgânica se decompõe muito devagar — e o carbono fica guardado por séculos, até milênios. É aqui que mora a maior parte do carbono azul.'},
+  en:{name:'Mud & Soil', whisper:'The treasure lies underfoot.', body:'In waterlogged, low-oxygen soil, organic matter decomposes very slowly — and carbon stays locked away for centuries, even millennia. This is where most blue carbon lives.'}},
+ {id:'pessoas', color:'#b5714c', bands:1, links:['cb12','cb13','cb9','cb10'],
+  pt:{name:'Pessoas & Comunidades', whisper:'Gente também é natureza.', body:'Pescadores artesanais, marisqueiras, catadores de caranguejo: comunidades que vivem do manguezal e cuidam dele há gerações. Nas Reservas Extrativistas Marinhas do litoral do Pará, natureza e gente formam um só território.'},
+  en:{name:'People & Communities', whisper:'People are nature too.', body:'Artisanal fishers, shellfish gatherers, crab collectors: communities that have lived from the mangrove, and cared for it, for generations. In the Marine Extractive Reserves of the Pará coast, nature and people form a single territory.'}},
+ {id:'rio', color:'#3f8c95', bands:2, links:['chuva','mar','cb5','cb7'],
+  pt:{name:'Rio & Estuário', whisper:'Doce e salgado, sem fronteira.', body:'O rio Caeté e tantos outros chegam ao mar devagar, misturando água doce e salgada. Essa mistura — o estuário — está entre os ambientes mais produtivos do planeta.'},
+  en:{name:'River & Estuary', whisper:'Fresh and salt, with no border.', body:'The Caeté and many other rivers reach the sea slowly, blending fresh and salt water. That blend — the estuary — is among the most productive environments on Earth.'}},
+ {id:'mar', color:'#255a78', bands:2, links:['cb7','mare','rio'],
+  pt:{name:'Mar', whisper:'Floresta e oceano são um sistema só.', body:'O oceano recebe do manguezal nutrientes e carbono, e devolve larvas, peixes e a própria maré. Ligados pela água, floresta e mar não existem um sem o outro.'},
+  en:{name:'Ocean', whisper:'Forest and ocean are one system.', body:'The ocean receives nutrients and carbon from the mangrove, and gives back larvae, fish and the tide itself. Joined by water, forest and sea cannot exist without each other.'}},
+ {id:'mare', color:'#5b9db3', bands:2, links:['lua','cb5','cb8'],
+  pt:{name:'Marés & Ondas', whisper:'Inspire com a enchente. Expire com a vazante.', body:'Duas vezes por dia a maré inunda a floresta e depois se retira. Esse vai-e-vem distribui sedimentos, sementes e alimento — é a respiração do manguezal.'},
+  en:{name:'Tides & Waves', whisper:'Breathe in with the flood. Breathe out with the ebb.', body:'Twice a day the tide floods the forest and then withdraws. This coming and going spreads sediment, seeds and food — it is the breathing of the mangrove.'}}
+];
+
+const CENTER = {id:'centro', color:'#f0e4c3', links:['cb1','cb6','cb9','cb12'],
+  pt:{name:'Integração', whisper:'Cuidar de uma parte é beneficiar o todo.', body:'No centro da espiral, tudo se encontra. O náutilo cresce câmara por câmara sem abandonar a própria forma — como uma zona úmida saudável, em que natureza, clima, economia e pessoas crescem juntos. É isso um co-benefício.'},
+  en:{name:'Integration', whisper:'To care for one part is to benefit the whole.', body:'At the centre of the spiral, everything meets. A nautilus grows chamber by chamber without ever leaving its own form — like a healthy wetland, where nature, climate, economy and people grow together. That is what a co-benefit is.'}};
+
+/* 13 co-benefícios — RASCUNHO. Ordem = do centro da concha para fora. */
+const COBENEFITS = [
+ {id:'cb1', domain:'nature', links:['fauna','mangue','raizes'],
+  pt:{name:'Biodiversidade', whisper:'Diversidade é resiliência.', body:'Zonas úmidas abrigam uma enorme variedade de plantas, peixes, crustáceos, aves e microrganismos. Ecossistemas íntegros e diversos resistem melhor às mudanças — e sustentam todos os outros co-benefícios.'},
+  en:{name:'Biodiversity', whisper:'Diversity is resilience.', body:'Wetlands shelter an enormous variety of plants, fish, crustaceans, birds and microorganisms. Intact, diverse ecosystems withstand change better — and sustain every other co-benefit.'}},
+ {id:'cb2', domain:'nature', links:['fauna','cb9'],
+  pt:{name:'Polinização', whisper:'Um serviço silencioso.', body:'Abelhas e outros insetos, aves e morcegos visitam as flores do mangue e das matas vizinhas. Esse trabalho discreto garante a reprodução das plantas e, em muitas regiões, a produção de mel.'},
+  en:{name:'Pollination', whisper:'A silent service.', body:'Bees and other insects, birds and bats visit the flowers of the mangrove and neighbouring forests. This quiet work secures plant reproduction and, in many regions, honey production.'}},
+ {id:'cb3', domain:'nature', links:['sol','mangue','cb6'],
+  pt:{name:'Produção primária', whisper:'Luz que vira floresta.', body:'Manguezais estão entre as florestas mais produtivas do planeta: transformam luz, água e nutrientes em folhas, madeira e raízes. Essa matéria viva é a base da teia alimentar do estuário.'},
+  en:{name:'Primary production', whisper:'Light becoming forest.', body:'Mangroves are among the most productive forests on Earth: they turn light, water and nutrients into leaves, wood and roots. That living matter is the base of the estuary’s food web.'}},
+ {id:'cb4', domain:'nature', links:['lama','chuva','raizes'],
+  pt:{name:'Formação do solo & ciclagem de nutrientes', whisper:'A floresta constrói o próprio chão.', body:'Folhas caem, raízes crescem, sedimentos se depositam: o manguezal forma o seu próprio solo. Nesse processo, os nutrientes circulam entre lama, água e seres vivos, mantendo o sistema fértil.'},
+  en:{name:'Soil formation & nutrient cycling', whisper:'The forest builds its own ground.', body:'Leaves fall, roots grow, sediment settles: the mangrove builds its own soil. Along the way, nutrients circulate between mud, water and living beings, keeping the system fertile.'}},
+ {id:'cb5', domain:'nature', links:['mare','rio','chuva','lua'],
+  pt:{name:'Regimes hidrológicos', whisper:'O caminho das águas.', body:'Zonas úmidas funcionam como esponjas: regulam o fluxo entre rio, maré e lençol freático, filtram a água e amortecem cheias e secas.'},
+  en:{name:'Hydrological regimes', whisper:'The pathways of water.', body:'Wetlands work like sponges: they regulate the flow between river, tide and groundwater, filter water and soften both floods and droughts.'}},
+ {id:'cb6', domain:'climate', links:['lama','cb3','cb7'],
+  pt:{name:'Estoques de carbono', whisper:'Carbono guardado é clima protegido.', body:'Carbono azul é o carbono guardado pelos ecossistemas costeiros. Nos manguezais amazônicos, a maior parte está no solo — inclusive em camadas profundas que a pesquisa ainda está revelando.'},
+  en:{name:'Carbon stocks', whisper:'Carbon held is climate protected.', body:'Blue carbon is the carbon held by coastal ecosystems. In Amazonian mangroves most of it lies in the soil — including deep layers that research is still uncovering.'}},
+ {id:'cb7', domain:'climate', links:['mar','rio','cb6'],
+  pt:{name:'Fluxos de carbono & exportação ao oceano', whisper:'Nem todo carbono fica parado.', body:'Parte do carbono viaja com a maré, dissolvida na água, e segue para o oceano. Medir essa exportação lateral é essencial para uma contabilidade de carbono fiel à realidade.'},
+  en:{name:'Carbon fluxes & export to the ocean', whisper:'Not all carbon stays still.', body:'Some carbon travels with the tide, dissolved in the water, and moves on to the ocean. Measuring this lateral export is essential for carbon accounting that is true to reality.'}},
+ {id:'cb8', domain:'climate', links:['raizes','mare','pessoas'],
+  pt:{name:'Proteção contra tempestades & inundações', whisper:'Uma muralha viva.', body:'Troncos e raízes dissipam a energia das ondas e seguram os sedimentos, reduzindo a erosão e o impacto de tempestades e inundações sobre quem vive no litoral.'},
+  en:{name:'Storm & flood protection', whisper:'A living seawall.', body:'Trunks and roots dissipate wave energy and hold sediment in place, reducing erosion and the impact of storms and floods on those who live along the coast.'}},
+ {id:'cb9', domain:'economy', links:['fauna','pessoas','cb10'],
+  pt:{name:'Produtos das zonas úmidas', whisper:'O mangue põe comida na mesa.', body:'Caranguejo, peixe, camarão, ostra, mexilhão: o manguezal alimenta famílias e abastece mercados. Quantificar esse valor mostra quanto a economia local depende de um ecossistema saudável.'},
+  en:{name:'Wetland products', whisper:'The mangrove puts food on the table.', body:'Crab, fish, shrimp, oysters, mussels: the mangrove feeds families and supplies markets. Quantifying that value shows how much the local economy depends on a healthy ecosystem.'}},
+ {id:'cb10', domain:'economy', links:['pessoas','cb9','cb11','cb13'],
+  pt:{name:'Geração de renda', whisper:'Floresta em pé, renda em casa.', body:'Da pesca artesanal ao turismo de base comunitária, a renda de muitas famílias nasce do manguezal conservado. Valorar o carbono e os demais serviços ecossistêmicos pode abrir novas fontes — desde que cheguem a quem cuida.'},
+  en:{name:'Income generation', whisper:'A standing forest, a living income.', body:'From artisanal fishing to community-based tourism, many families’ income grows from a conserved mangrove. Valuing carbon and other ecosystem services can open new sources — as long as they reach those who do the caring.'}},
+ {id:'cb11', domain:'economy', links:['cb10','pessoas'],
+  pt:{name:'Empregos & multiplicador do emprego', whisper:'Um trabalho sustenta outros.', body:'Cada ocupação ligada à zona úmida sustenta outras ao redor — no transporte, no comércio, no beneficiamento. Esse efeito multiplicador revela o peso real do manguezal na economia regional.'},
+  en:{name:'Jobs & the employment multiplier', whisper:'One job sustains others.', body:'Every occupation tied to the wetland supports others around it — in transport, trade and processing. This multiplier effect reveals the real weight of the mangrove in the regional economy.'}},
+ {id:'cb12', domain:'social', links:['pessoas','cb13','centro'],
+  pt:{name:'Saberes & modos de vida', whisper:'Escutar também é fazer ciência.', body:'Pescadores, marisqueiras, proprietários e gestores percebem e usam os co-benefícios de maneiras diferentes. Escutar esses saberes é parte da ciência — e condição para uma boa gestão.'},
+  en:{name:'Knowledge & ways of life', whisper:'Listening is science too.', body:'Fishers, shellfish gatherers, landowners and managers perceive and use co-benefits in different ways. Listening to that knowledge is part of the science — and a condition for good management.'}},
+ {id:'cb13', domain:'social', links:['pessoas','cb12','cb10'],
+  pt:{name:'Justiça climática', whisper:'Quem cuida, decide junto.', body:'Quem protege o manguezal deve participar das decisões e dos benefícios. Co-benefícios sociais podem se tornar indicadores mensuráveis de justiça climática — inclusive na governança dos mercados de carbono azul.'},
+  en:{name:'Climate justice', whisper:'Those who care, decide together.', body:'Those who protect the mangrove should share in the decisions and the benefits. Social co-benefits can become measurable indicators of climate justice — including in the governance of blue carbon markets.'}}
+];
+
+const UI = {
+ pt:{ soundOff:'♪ Ligar som', soundOn:'♪ Som ligado', hint:'Toque em qualquer peça da mandala',
+  viewCosmos:'Mandala inteira', viewShell:'Mergulhar na concha', legend:'4 domínios · 13 co-benefícios',
+  kindElement:'Elemento da natureza', kindCenter:'O centro', kindCb:'Co-benefício', kindDomain:'Domínio', of:'de', draft:'rascunho',
+  links:'Conectado a', inDomain:'Co-benefícios deste domínio', prev:'← Anterior', next:'Próximo →', auto:'▶ Jornada automática', pause:'❙❙ Pausar', back:'Voltar ao início',
+  introEyebrow:'Uma jornada pelas zonas úmidas', introTitle:'Uma mandala viva',
+  introBody:'Nascida da nossa logo, esta mandala reúne o sol, a lua, a chuva, o mar, a maré, o manguezal e as pessoas. No coração dela, a concha do náutilo guarda os 13 co-benefícios das zonas úmidas, em 4 domínios. Nada aqui existe sozinho: toque em uma peça e veja a que ela se conecta.',
+  introNote:'Rascunho para o grupo: os nomes e a divisão dos 13 co-benefícios foram montados a partir do texto dos domínios no site da conferência e aguardam revisão do time científico.',
+  start:'Iniciar a jornada', startSound:'Iniciar com som',
+  outroEyebrow:'Fim da jornada', outroTitle:'A mandala completa',
+  outroBody:'Sol, maré, lama, floresta, gente, carbono, renda, justiça: vinte e seis peças, um único desenho. Proteger uma zona úmida nunca é só guardar carbono — é manter viva toda essa teia. Essa é a conversa que nos espera em Bragança, de 12 a 14 de novembro de 2026.',
+  aria:'Mandala interativa dos co-benefícios das zonas úmidas' },
+ en:{ soundOff:'♪ Turn sound on', soundOn:'♪ Sound on', hint:'Touch any piece of the mandala',
+  viewCosmos:'Whole mandala', viewShell:'Dive into the shell', legend:'4 domains · 13 co-benefits',
+  kindElement:'Element of nature', kindCenter:'The centre', kindCb:'Co-benefit', kindDomain:'Domain', of:'of', draft:'draft',
+  links:'Connected to', inDomain:'Co-benefits in this domain', prev:'← Previous', next:'Next →', auto:'▶ Guided journey', pause:'❙❙ Pause', back:'Back to the start',
+  introEyebrow:'A journey through the wetlands', introTitle:'A living mandala',
+  introBody:'Born from our logo, this mandala gathers the sun, the moon, the rain, the ocean, the tide, the mangrove and the people. At its heart, a nautilus shell holds the 13 co-benefits of wetlands, across 4 domains. Nothing here exists alone: touch a piece and see what it connects to.',
+  introNote:'Draft for the group: the names and grouping of the 13 co-benefits were assembled from the thematic-domain text on the conference website and await review by the science team.',
+  start:'Begin the journey', startSound:'Begin with sound',
+  outroEyebrow:'Journey’s end', outroTitle:'The whole mandala',
+  outroBody:'Sun, tide, mud, forest, people, carbon, income, justice: twenty-six pieces, one single drawing. Protecting a wetland is never only about storing carbon — it is about keeping this whole web alive. That is the conversation waiting for us in Bragança, 12–14 November 2026.',
+  aria:'Interactive mandala of wetland co-benefits' }
+};
+</script>
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const $=s=>document.querySelector(s);
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const el=(tag,attrs,parent)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- item registry ---------- */
+const ITEMS={};
+ELEMENTS.forEach(e=>{e.kind='element';ITEMS[e.id]=e;});
+CENTER.kind='center';ITEMS[CENTER.id]=CENTER;
+COBENEFITS.forEach((c,i)=>{c.kind='cb';c.index=i;ITEMS[c.id]=c;});
+const ORDER=['sol','cosmos','lua','chuva','rio','mar','mare','mangue','raizes','fauna','lama','pessoas','centro',...COBENEFITS.map(c=>c.id)];
+
+/* ---------- geometry: a nautilus growing into the world ---------- */
+const R=480, C={x:-6,y:104};
+const G=2.2, B=Math.log(G)/(2*Math.PI), N=13, D=40*Math.PI/180, RS=244, TE=-100*Math.PI/180, BOW=.42*D;
+const P=(r,th)=>[C.x+r*Math.cos(th),C.y+r*Math.sin(th)];
+const f=n=>(Math.round(n*10)/10);
+const toPath=(pts,close=true)=>'M'+pts.map(p=>f(p[0])+' '+f(p[1])).join('L')+(close?'Z':'');
+const rs=th=>RS*Math.exp(B*(th-TE));
+function septum(th){const a=[],ri=rs(th)/G,ro=rs(th);for(let i=0;i<=10;i++){const t=i/10;a.push(P(ri+(ro-ri)*t,th-BOW*Math.sin(Math.PI*t)));}return a;}
+function chamber(k){const t1=TE-(N-k)*D,t2=t1+D,pts=[];
+  for(let i=0;i<=16;i++){const th=t1+(t2-t1)*i/16;pts.push(P(rs(th),th));}
+  pts.push(...septum(t2).reverse());
+  for(let i=0;i<=16;i++){const th=t2-(t2-t1)*i/16;pts.push(P(rs(th)/G,th));}
+  pts.push(...septum(t1));
+  const tm=(t1+t2)/2;return {d:toPath(pts),anchor:P(rs(tm)*(1+1/G)/2,tm-BOW*.6)};}
+function eye(){const t0=TE-N*D-2*Math.PI,t1=TE-N*D,pts=[];
+  for(let i=0;i<=48;i++){const th=t0+(t1-t0)*i/48;pts.push(P(rs(th),th));}
+  pts.push(...septum(t1).reverse());return toPath(pts);}
+function eyeSpiral(){const pts=[];for(let th=TE-N*D-2*Math.PI;th>TE-N*D-7*Math.PI;th-=.12)pts.push(P(rs(th)*.97,th));return toPath(pts,false);}
+
+const CS=.7,RHO=95,RMAX=680;
+const sw=(phi,r)=>P(r,phi+Math.log(r/RHO)/CS);
+function swirl(phi,r0=28,r1=RMAX){const a=[];for(let r=r0;r<=r1;r*=1.06)a.push(sw(phi,r));a.push(sw(phi,r1));return a;}
+function sector(pA,pB){const pts=swirl(pA);const aA=pA+Math.log(RMAX/RHO)/CS,aB=pB+Math.log(RMAX/RHO)/CS;
+  for(let i=1;i<8;i++)pts.push(P(RMAX,aA+(aB-aA)*i/8));
+  pts.push(...swirl(pB).reverse());return toPath(pts);}
+function anchorOn(phi,target=372){let best=null,bd=1e9;for(let r=110;r<RMAX;r+=6){const p=sw(phi,r),d=Math.hypot(p[0],p[1]);if(Math.abs(d-target)<bd){bd=Math.abs(d-target);best=p;}}return best;}
+const SECT=2*Math.PI/ELEMENTS.length;
+/* rotate the whole swirl so the sun lands top-left, like the logo */
+let PHI0=0;{let bd=1e9;for(let deg=0;deg<360;deg++){const p0=deg*Math.PI/180,a=anchorOn(p0+SECT/2);let diff=Math.abs(Math.atan2(a[1],a[0])-(-2.30));diff=Math.min(diff,2*Math.PI-diff);if(diff<bd){bd=diff;PHI0=p0;}}}
+
+function shade(hex,amt){const n=parseInt(hex.slice(1),16);const ch=s=>Math.max(0,Math.min(255,Math.round(((n>>s)&255)+amt*255)));return '#'+[16,8,0].map(s=>ch(s).toString(16).padStart(2,'0')).join('');}
+const sparkle=(x,y,s)=>`M${f(x)} ${f(y-s)}Q${f(x)} ${f(y)} ${f(x+s)} ${f(y)}Q${f(x)} ${f(y)} ${f(x)} ${f(y+s)}Q${f(x)} ${f(y)} ${f(x-s)} ${f(y)}Q${f(x)} ${f(y)} ${f(x)} ${f(y-s)}Z`;
+const drop=(x,y,s)=>`M${f(x)} ${f(y-s*1.2)}C${f(x+s)} ${f(y)} ${f(x+s*.9)} ${f(y+s)} ${f(x)} ${f(y+s)}C${f(x-s*.9)} ${f(y+s)} ${f(x-s)} ${f(y)} ${f(x)} ${f(y-s*1.2)}Z`;
+function scatter(phi,count,dmin=255,dmax=440){const c=[];[.22,.5,.78].forEach((u,j)=>{for(let r=130+j*17;r<RMAX;r+=38){const p=sw(phi+SECT*u,r),d=Math.hypot(p[0],p[1]);if(d>dmin&&d<dmax)c.push(p);}});
+  const out=[];const step=Math.max(1,c.length/count);for(let i=0;i<c.length&&out.length<count;i+=step)out.push(c[Math.floor(i)]);return out;}
+
+/* ---------- build the mandala ---------- */
+const svg=$('#m'),gOuter=$('#outer'),gShell=$('#shell'),gRim=$('#rim'),gFx=$('#fx');
+const anchors={};let pieceCount=0;
+function makePiece(parent,tag,attrs,item,cls=''){
+  const p=el(tag,Object.assign({class:'piece '+cls,'data-id':item.id,tabindex:'0',role:'button',fill:item.color,style:`--c:${item.color};--i:${pieceCount++}`},attrs),parent);
+  p.addEventListener('click',()=>select(item.id,true));
+  p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(item.id,true);}});
+  p.addEventListener('pointerenter',()=>{state.hover=item.id;caption();});
+  p.addEventListener('pointerleave',()=>{state.hover=null;caption();});
+  p.addEventListener('focus',()=>{state.hover=item.id;caption();});
+  p.addEventListener('blur',()=>{state.hover=null;caption();});
+  return p;}
+
+function build(){
+  // rim: 13 seeds and 4 cardinal marks
+  el('circle',{r:497,fill:'none',stroke:'#f2eada','stroke-opacity':.28,'stroke-width':1.2},gRim);
+  for(let i=0;i<13;i++){const a=-Math.PI/2+i*2*Math.PI/13;el('circle',{cx:f(497*Math.cos(a)),cy:f(497*Math.sin(a)),r:4.2,fill:'#f2eada','fill-opacity':.75},gRim);}
+  el('circle',{r:482,fill:'#06141d'},gRim);
+
+  ELEMENTS.forEach((e,j)=>{
+    const pA=PHI0+j*SECT,pB=pA+SECT;
+    makePiece(gOuter,'path',{d:sector(pA,pB)},e);
+    anchors[e.id]=anchorOn(pA+SECT/2);
+    // tonal half-band, like the layered waves of the logo
+    el('path',{class:'deco',d:sector(pA,pA+SECT*.5),fill:'#ffffff','fill-opacity':.075},gOuter);
+    for(let b=1;b<=e.bands;b++)el('path',{class:'deco',d:toPath(swirl(pA+SECT*b/(e.bands+1),90),false),fill:'none',stroke:'#06141d','stroke-opacity':.5,'stroke-width':2},gOuter);
+    if(e.vein)el('path',{class:'deco',d:toPath(swirl(pA+SECT*.5,150),false),fill:'none',stroke:'#f2eada','stroke-opacity':.35,'stroke-width':1.6},gOuter);
+  });
+  // sun, stars, moon, rain
+  const s=anchors.sol;makePiece(gOuter,'circle',{cx:f(s[0]),cy:f(s[1]),r:54},Object.assign({},ITEMS.sol,{color:'#e6bb6a'}));
+  scatter(PHI0+SECT,7).forEach((p,i)=>el('path',{class:'deco',d:sparkle(p[0],p[1],[15,7,11,6,18,8,10][i%7]),fill:'#f2eada'},gOuter));
+  const m=anchors.lua;el('path',{class:'deco',d:`M${f(m[0])} ${f(m[1]-32)}A32 32 0 1 1 ${f(m[0])} ${f(m[1]+32)}A41 41 0 0 0 ${f(m[0])} ${f(m[1]-32)}Z`,fill:'#f2eada','fill-opacity':.92},gOuter);
+  scatter(PHI0+3*SECT,6).forEach((p,i)=>el('path',{class:'deco',d:drop(p[0],p[1],[9,6,8,5,7,6][i%6]),fill:'#f2eada','fill-opacity':.7},gOuter));
+
+  // the shell: 13 chambers, inner → outer, coloured by domain
+  COBENEFITS.forEach((c,k)=>{const dom=DOMAINS[c.domain];c.color=shade(dom.color,(k%2?.05:-.025));
+    const ch=chamber(k);anchors[c.id]=ch.anchor;makePiece(gShell,'path',{d:ch.d},c,'shell');});
+  makePiece(gShell,'path',{d:eye()},CENTER,'shell');anchors.centro=[C.x,C.y];
+  el('path',{class:'deco',d:eyeSpiral(),fill:'none',stroke:'#8a7a52','stroke-width':1.6,'stroke-linecap':'round'},gShell);
+}
+
+/* ---------- state & rendering ---------- */
+const state={lang:'pt',sel:null,mode:'intro',domain:null,hover:null,auto:false};
+try{const l=localStorage.getItem('mandala-lang');if(l==='en'||l==='pt')state.lang=l;}catch(e){}
+const L=()=>state.lang, t=k=>UI[L()][k];
+const nameOf=id=>ITEMS[id][L()].name;
+
+function caption(){const c=$('#caption');const id=state.hover||state.sel;
+  if(id){const it=ITEMS[id];const kind=it.kind==='cb'?DOMAINS[it.domain][L()].name:it.kind==='center'?t('kindCenter'):t('kindElement');c.innerHTML=esc(nameOf(id))+'<small>'+esc(kind)+'</small>';}
+  else if(state.mode==='domain'){c.textContent=DOMAINS[state.domain][L()].name;}
+  else c.innerHTML='<small style="margin:0">'+esc(t('hint'))+'</small>';}
+
+function paintSelection(){
+  svg.classList.toggle('has-sel',!!state.sel||state.mode==='domain');
+  svg.querySelectorAll('.piece').forEach(p=>{const id=p.dataset.id,it=ITEMS[id];let sel=false,linked=false;
+    if(state.mode==='domain'){sel=it.kind==='cb'&&it.domain===state.domain;}
+    else if(state.sel){sel=id===state.sel;linked=ITEMS[state.sel].links.includes(id);}
+    p.classList.toggle('sel',sel);p.classList.toggle('linked',linked);
+    p.setAttribute('aria-label',it[L()].name);p.setAttribute('aria-pressed',sel?'true':'false');});}
+
+function chipHTML(id){const it=ITEMS[id];return `<button type="button" class="chip" data-go="${id}" style="--c:${it.color}"><i></i>${esc(nameOf(id))}</button>`;}
+function navHTML(){const i=ORDER.indexOf(state.sel);
+  return `<div class="nav"><button type="button" class="ghost" data-act="prev">${t('prev')}</button><button type="button" class="ghost" data-act="auto" aria-pressed="${state.auto}">${state.auto?t('pause'):t('auto')}</button><button type="button" class="ghost" data-act="next">${t('next')}</button>${i>=0?`<span class="count">${i+1} / ${ORDER.length}</span>`:''}</div>`;}
+function thumbHTML(id){const nodes=[...svg.querySelectorAll(`.piece[data-id="${id}"]`)];if(!nodes.length)return '';
+  const path=nodes[0];let bb;try{bb=path.getBBox();}catch(e){return '';}
+  // clip the outer pieces to the disc so the thumbnail matches what is seen
+  const x0=Math.max(bb.x,-R),y0=Math.max(bb.y,-R),x1=Math.min(bb.x+bb.width,R),y1=Math.min(bb.y+bb.height,R),pad=10;
+  const clip=ITEMS[id].kind==='element'?' clip-path="url(#disc)"':'';
+  return `<svg class="thumb" viewBox="${f(x0-pad)} ${f(y0-pad)} ${f(x1-x0+2*pad)} ${f(y1-y0+2*pad)}" aria-hidden="true"><g${clip}><path d="${path.getAttribute('d')}" fill="${ITEMS[id].color}"/></g></svg>`;}
+
+function renderPanel(){const p=$('#panel');let h='';
+  if(state.mode==='intro'){
+    h=`<p class="eyebrow">${t('introEyebrow')}</p><h1>${t('introTitle')}</h1><p class="body">${t('introBody')}</p>
+       <div class="row"><button type="button" class="cta" data-act="start">${t('start')}</button><button type="button" class="ghost" data-act="start-sound">${t('startSound')}</button></div>
+       <p class="note">${t('introNote')}</p>`;
+  }else if(state.mode==='outro'){
+    h=`<p class="eyebrow">${t('outroEyebrow')}</p><h1>${t('outroTitle')}</h1><p class="body">${t('outroBody')}</p>
+       <div class="row"><button type="button" class="ghost" data-act="home">${t('back')}</button></div>`;
+  }else if(state.mode==='domain'){const d=DOMAINS[state.domain];
+    h=`<p class="eyebrow" style="--c:${d.color}"><b>${t('kindDomain')} ${d.n} ${t('of')} 4</b></p><h2>${esc(d[L()].name)}</h2><p class="body">${esc(d[L()].body)}</p>
+       <p class="links-label">${t('inDomain')} <span class="draft">${t('draft')}</span></p><div class="links">${COBENEFITS.filter(c=>c.domain===state.domain).map(c=>chipHTML(c.id)).join('')}</div>
+       <div class="row"><button type="button" class="ghost" data-act="home">${t('back')}</button></div>`;
+  }else{const it=ITEMS[state.sel],x=it[L()];let eyebrow;
+    if(it.kind==='cb'){const d=DOMAINS[it.domain];eyebrow=`<b>${t('kindCb')} ${it.index+1} ${t('of')} 13</b><span>${esc(d[L()].name)}</span><span class="draft">${t('draft')}</span>`;}
+    else eyebrow=`<b>${it.kind==='center'?t('kindCenter'):t('kindElement')}</b>`;
+    h=`<p class="eyebrow" style="--c:${it.color}">${eyebrow}</p>
+       <div class="head">${thumbHTML(it.id)}<h2>${esc(x.name)}</h2></div>
+       <p class="whisper" style="--c:${it.kind==='element'&&['cosmos','mar','lama','lua'].includes(it.id)?'#e0b060':it.color}">${esc(x.whisper)}</p>
+       <p class="body">${esc(x.body)}</p>
+       <p class="links-label">${t('links')}</p><div class="links">${it.links.map(chipHTML).join('')}</div>${navHTML()}`;}
+  p.innerHTML='<div class="panel-inner">'+h+'</div>';}
+
+function renderChrome(){
+  document.documentElement.lang=L()==='pt'?'pt-BR':'en';
+  svg.setAttribute('aria-label',t('aria'));
+  $('#lang-pt').setAttribute('aria-pressed',L()==='pt');$('#lang-en').setAttribute('aria-pressed',L()==='en');
+  $('#sound').textContent=audio.on?t('soundOn'):t('soundOff');$('#sound').setAttribute('aria-pressed',audio.on);
+  $('#views').innerHTML=`<button type="button" class="ghost" data-view="cosmos" aria-pressed="${view==='cosmos'}">${t('viewCosmos')}</button><button type="button" class="ghost" data-view="shell" aria-pressed="${view==='shell'}">${t('viewShell')}</button>`;
+  $('#legend').innerHTML=`<span class="legend-label">${t('legend')}</span>`+['nature','economy','climate','social'].map(k=>`<button type="button" class="chip" data-domain="${k}" aria-pressed="${state.mode==='domain'&&state.domain===k}" style="--c:${DOMAINS[k].color}"><i></i>${esc(DOMAINS[k][L()].name)}</button>`).join('');
+}
+function renderAll(){renderChrome();renderPanel();paintSelection();caption();}
+
+/* ---------- camera ---------- */
+const VB={cosmos:[-520,-520,1040,1040],shell:[C.x-292,C.y-292,584,584]};
+let view='cosmos',vb=VB.cosmos.slice(),camRaf=0,warp=0;
+function setView(v){if(v===view)return;view=v;const from=vb.slice(),to=VB[v],t0=performance.now(),dur=reduced?1:1500;
+  cancelAnimationFrame(camRaf);
+  (function step(now){let k=Math.min(1,(now-t0)/dur);const e=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+    vb=from.map((a,i)=>a+(to[i]-a)*e);svg.setAttribute('viewBox',vb.map(f).join(' '));
+    warp=reduced?0:Math.sin(Math.PI*k)*(v==='shell'?1:-1);
+    if(k<1)camRaf=requestAnimationFrame(step);else warp=0;})(t0);
+  renderChrome();}
+
+/* ---------- actions ---------- */
+function ripple(id){if(reduced)return;const a=anchors[id];if(!a)return;const c=el('circle',{class:'ripple',cx:f(a[0]),cy:f(a[1]),r:24},gFx);setTimeout(()=>c.remove(),1700);}
+function select(id,user){
+  if(user)stopAuto();
+  if(state.mode==='item'&&state.sel===id&&user){home();return;}
+  state.sel=id;state.mode='item';state.domain=null;
+  const it=ITEMS[id];setView(it.kind==='element'?'cosmos':'shell');
+  ripple(id);audio.chime(ORDER.indexOf(id));renderAll();}
+function home(){stopAuto();state.sel=null;state.mode='intro';state.domain=null;setView('cosmos');renderAll();}
+function outro(){stopAuto();state.sel=null;state.mode='outro';state.domain=null;setView('cosmos');audio.chime(27);renderAll();}
+function showDomain(k){stopAuto();if(state.mode==='domain'&&state.domain===k){home();return;}state.sel=null;state.mode='domain';state.domain=k;setView('shell');audio.chime(['nature','economy','climate','social'].indexOf(k)*3);renderAll();}
+function go(dir){const i=ORDER.indexOf(state.sel);const n=i+dir;if(n>=ORDER.length){outro();return;}if(n<0){home();return;}select(ORDER[n],false);}
+let autoTimer=0;
+function startAuto(){state.auto=true;clearInterval(autoTimer);autoTimer=setInterval(()=>{if(state.mode!=='item'){stopAuto();renderPanel();return;}go(1);},11000);}
+function stopAuto(){state.auto=false;clearInterval(autoTimer);}
+
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.go){select(b.dataset.go,true);return;}
+  if(b.dataset.domain){showDomain(b.dataset.domain);return;}
+  if(b.dataset.view){setView(b.dataset.view);return;}
+  switch(b.dataset.act){
+    case 'start':select(ORDER[0],true);break;
+    case 'start-sound':audio.toggle(true);select(ORDER[0],true);break;
+    case 'home':home();break;
+    case 'prev':stopAuto();go(-1);break;
+    case 'next':stopAuto();go(1);break;
+    case 'auto':if(state.auto){stopAuto();}else{startAuto();}renderPanel();break;}
+  if(b.id==='sound'){audio.toggle();renderChrome();}
+  if(b.id==='lang-pt'||b.id==='lang-en'){state.lang=b.id.slice(5);try{localStorage.setItem('mandala-lang',state.lang);}catch(err){}renderAll();}
+});
+document.addEventListener('keydown',e=>{if(e.target.closest('input,textarea'))return;
+  if(e.key==='Escape')home();
+  if(state.mode==='item'&&e.key==='ArrowRight'){stopAuto();go(1);}
+  if(state.mode==='item'&&e.key==='ArrowLeft'){stopAuto();go(-1);}});
+
+/* ---------- sound: a drone, a slow sea, and one bell per piece ---------- */
+const audio={on:false,ctx:null,master:null,bus:null,
+  build(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;const c=this.ctx=new AC();
+    this.master=c.createGain();this.master.gain.value=0;this.master.connect(c.destination);
+    const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1100;lp.connect(this.master);
+    [[110,.06,.05],[164.81,.04,.07],[220,.035,.09],[277.18,.02,.06],[329.63,.014,.11]].forEach(([fr,g,lf])=>{
+      const o=c.createOscillator();o.frequency.value=fr;o.detune.value=(Math.random()-.5)*8;const gn=c.createGain();gn.gain.value=g;
+      const l=c.createOscillator();l.frequency.value=lf;const lg=c.createGain();lg.gain.value=g*.6;l.connect(lg);lg.connect(gn.gain);
+      o.connect(gn);gn.connect(lp);o.start();l.start();});
+    const len=c.sampleRate*3,buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);let last=0;
+    for(let i=0;i<len;i++){last=(last+.03*(Math.random()*2-1))/1.03;d[i]=last*3;}
+    const n=c.createBufferSource();n.buffer=buf;n.loop=true;const nf=c.createBiquadFilter();nf.type='lowpass';nf.frequency.value=700;
+    const ng=c.createGain();ng.gain.value=.12;const sl=c.createOscillator();sl.frequency.value=.085;const sg=c.createGain();sg.gain.value=.1;sl.connect(sg);sg.connect(ng.gain);
+    n.connect(nf);nf.connect(ng);ng.connect(this.master);n.start();sl.start();
+    const dl=c.createDelay(1);dl.delayTime.value=.41;const fb=c.createGain();fb.gain.value=.38;this.bus=c.createGain();
+    this.bus.connect(this.master);this.bus.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(this.master);return true;},
+  toggle(force){const want=force===true?true:!this.on;if(want&&!this.ctx&&!this.build())return;
+    this.on=want;if(!this.ctx)return;if(want)this.ctx.resume();
+    const g=this.master.gain,now=this.ctx.currentTime;g.cancelScheduledValues(now);g.setValueAtTime(g.value,now);g.linearRampToValueAtTime(want?.7:0,now+(want?2.5:.8));},
+  chime(i){if(!this.on||!this.ctx)return;if(i<0)i=0;const c=this.ctx,now=c.currentTime,sc=[0,2,4,7,9];
+    const semi=sc[i%5]+12*(Math.floor(i/5)%3),fr=220*Math.pow(2,semi/12);
+    [[1,.16],[2,.05],[3.01,.02]].forEach(([m,a])=>{const o=c.createOscillator();o.type='sine';o.frequency.value=fr*m;const g=c.createGain();
+      g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(a,now+.02);g.gain.exponentialRampToValueAtTime(.0001,now+3.2);
+      o.connect(g);g.connect(this.bus);o.start(now);o.stop(now+3.3);});}
+};
+
+/* ---------- the sky ---------- */
+function sky(){const cv=$('#sky'),cx=cv.getContext('2d');let W,H,stars=[];
+  function size(){const dpr=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);}
+  size();addEventListener('resize',()=>{size();if(reduced)draw(0);});
+  for(let i=0;i<230;i++)stars.push({a:Math.random()*6.283,d:Math.pow(Math.random(),.6),s:Math.random()*1.3+.3,tw:Math.random()*6.283,sp:.5+Math.random()});
+  function draw(tm){cx.clearRect(0,0,W,H);const mx=Math.hypot(W,H)/2;
+    for(const s of stars){const pd=s.d;if(!reduced){s.d+=(.000035+Math.abs(warp)*.011)*(.25+s.d)*s.sp*(warp<0?-1:1);s.a+=.00004;
+        if(s.d>1.05)s.d=.03;if(s.d<.02)s.d=1.04;}
+      const x=W/2+Math.cos(s.a)*s.d*mx,y=H/2+Math.sin(s.a)*s.d*mx,al=.3+.5*(.5+.5*Math.sin(tm*.0011*s.sp+s.tw));
+      if(Math.abs(warp)>.05&&Math.abs(s.d-pd)<.2){cx.strokeStyle=`rgba(242,234,218,${al*.8})`;cx.lineWidth=s.s;cx.beginPath();cx.moveTo(W/2+Math.cos(s.a)*pd*mx,H/2+Math.sin(s.a)*pd*mx);cx.lineTo(x,y);cx.stroke();}
+      else{cx.fillStyle=`rgba(242,234,218,${al})`;cx.beginPath();cx.arc(x,y,s.s,0,6.283);cx.fill();}}
+    if(!reduced)requestAnimationFrame(draw);}
+  draw(0);}
+
+/* ---------- boot ---------- */
+function start(data){
+  if(data&&data.lang)state.lang=data.lang;
+  build();sky();renderAll();
+  if(data&&data.sel&&ITEMS[data.sel])select(data.sel,false);
+  window.claude?.hot?.snapshot?.(()=>({lang:state.lang,sel:state.sel}));
+}
+if(window.claude?.hot?.ready)window.claude.hot.ready(start);else start(window.claude?.hot?.data??{});
+})();
+</script>
+</body>
+</html>
