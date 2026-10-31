@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Mandala interativa dos co-benefícios das zonas úmidas — Wetlands Co-Benefits Project / 1st Blue Carbon & Wetlands Co-benefits Conference, Bragança 2026.">
+<meta name="description" content="Mandala interativa dos co-benefícios das zonas úmidas — Wetlands Co-Benefits Project: Integração · Natureza e Pessoas.">
 <meta name="theme-color" content="#06141d">
 <meta property="og:title" content="Mandala dos Co-benefícios">
-<meta property="og:description" content="Uma jornada contemplativa pelo sol, a maré, o manguezal e os 13 co-benefícios das zonas úmidas.">
+<meta property="og:description" content="Uma jornada contemplativa pelo sol, a maré, o manguezal e os benefícios das zonas úmidas.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2306141d'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%23e0b060' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='11' fill='none' stroke='%235ba3b0' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23f2eada'/%3E%3C/svg%3E">
 <style>body{margin:0}[hidden]{display:none!important}</style>
 <title>Mandala dos Co-benefícios</title>
@@ -139,6 +139,10 @@
       <div class="seg" role="group" aria-label="Idioma / Language">
         <button type="button" id="lang-pt" aria-pressed="true">PT</button>
         <button type="button" id="lang-en" aria-pressed="false">EN</button>
+        <button type="button" id="lang-es" aria-pressed="false">ES</button>
+        <button type="button" id="lang-fr" aria-pressed="false">FR</button>
+        <button type="button" id="lang-it" aria-pressed="false">IT</button>
+        <button type="button" id="lang-ja" aria-pressed="false">JA</button>
       </div>
     </div>
   </header>
@@ -166,8 +170,7 @@
 <script>
 /* =====================================================================
    CONTEÚDO — edite aqui. Cada peça tem nome, "sussurro", texto e conexões.
-   Os 13 co-benefícios (cb1…cb13) são um RASCUNHO montado a partir do texto
-   dos domínios no site da conferência; aguardam revisão do time científico.
+   Os co-benefícios (cb1…cb13) percorrem os quatro domínios do projeto.
    ===================================================================== */
 const DOMAINS = {
   nature:  {n:1, color:'#5e8f52', pt:{name:'Biodiversidade & Natureza', body:'A integridade do ecossistema: biodiversidade, polinização, produção primária, formação do solo, ciclagem de nutrientes e o caminho das águas. É a base viva de onde nascem todos os outros co-benefícios.'},
@@ -186,17 +189,17 @@ const ELEMENTS = [
   pt:{name:'Sol', whisper:'Tudo o que vive é luz transformada.', body:'Toda a energia do manguezal começa aqui. A luz do sol move a fotossíntese, que transforma o gás carbônico do ar em folhas, troncos e raízes — o primeiro passo do carbono azul.'},
   en:{name:'Sun', whisper:'Everything alive is light, transformed.', body:'All the energy of the mangrove begins here. Sunlight drives photosynthesis, turning carbon dioxide from the air into leaves, trunks and roots — the first step of blue carbon.'}},
  {id:'cosmos', color:'#1d4560', bands:0, links:['lua','centro','sol'],
-  pt:{name:'Céu & Estrelas', whisper:'Visto de longe, tudo é um só.', body:'Do espaço, a costa amazônica aparece como uma renda verde entre o rio e o mar. A mandala lembra que o manguezal não é um lugar isolado: é parte de um planeta vivo, de um único sistema.'},
-  en:{name:'Sky & Stars', whisper:'From far enough away, everything is one.', body:'From space, the Amazon coast looks like green lace between river and sea. The mandala is a reminder that a mangrove is never an isolated place: it belongs to one living planet, one system.'}},
+  pt:{name:'Céu & Estrelas', whisper:'Visto de longe, tudo é um só.', body:'Do espaço, as costas de manguezal aparecem como uma renda verde entre o rio e o mar. A mandala lembra que o manguezal não é um lugar isolado: é parte de um planeta vivo, de um único sistema.'},
+  en:{name:'Sky & Stars', whisper:'From far enough away, everything is one.', body:'From space, mangrove coasts look like green lace between river and sea. The mandala is a reminder that a mangrove is never an isolated place: it belongs to one living planet, one system.'}},
  {id:'lua', color:'#44688a', bands:0, links:['mare','fauna','cb5'],
-  pt:{name:'Lua', whisper:'O ritmo vem de cima.', body:'A lua puxa o oceano e dá o compasso do manguezal. No litoral do Pará — uma costa de macromaré — o mar sobe e desce vários metros, duas vezes por dia, e toda a vida se organiza em torno desse pulso.'},
-  en:{name:'Moon', whisper:'The rhythm comes from above.', body:'The moon pulls the ocean and sets the tempo of the mangrove. On the coast of Pará — a macrotidal coast — the sea rises and falls several metres twice a day, and all life arranges itself around that pulse.'}},
+  pt:{name:'Lua', whisper:'O ritmo vem de cima.', body:'A lua puxa o oceano e dá o compasso do manguezal. Em costas de macromaré, o mar sobe e desce vários metros, duas vezes por dia, e toda a vida se organiza em torno desse pulso.'},
+  en:{name:'Moon', whisper:'The rhythm comes from above.', body:'The moon pulls the ocean and sets the tempo of the mangrove. On macrotidal coasts, the sea rises and falls several metres twice a day, and all life arranges itself around that pulse.'}},
  {id:'chuva', color:'#7fb4c1', bands:1, links:['rio','cb5','cb4'],
-  pt:{name:'Chuva', whisper:'A água sempre volta.', body:'A chuva amazônica alimenta os rios que descem até o estuário, trazendo água doce, sedimentos e nutrientes. É o encontro da água do céu, do rio e do mar que cria a zona úmida.'},
-  en:{name:'Rain', whisper:'Water always returns.', body:'Amazonian rain feeds the rivers that run down to the estuary, carrying fresh water, sediment and nutrients. A wetland is born where water from the sky, the river and the sea meet.'}},
+  pt:{name:'Chuva', whisper:'A água sempre volta.', body:'A chuva alimenta os rios que descem até o estuário, trazendo água doce, sedimentos e nutrientes. É o encontro da água do céu, do rio e do mar que cria a zona úmida.'},
+  en:{name:'Rain', whisper:'Water always returns.', body:'Rain feeds the rivers that run down to the estuary, carrying fresh water, sediment and nutrients. A wetland is born where water from the sky, the river and the sea meet.'}},
  {id:'mangue', color:'#3f6f3c', bands:0, vein:true, links:['raizes','cb1','cb6','cb8'],
-  pt:{name:'Manguezal', whisper:'Uma floresta que aprendeu a viver na maré.', body:'Floresta entre a terra e o mar. A Costa de Manguezais de Macromaré da Amazônia é um dos maiores e mais contínuos sistemas de manguezais do mundo — e Bragança está dentro dela.'},
-  en:{name:'Mangrove forest', whisper:'A forest that learned to live with the tide.', body:'A forest between land and sea. The Amazon Macrotidal Mangrove Coast is one of the largest and most continuous mangrove systems in the world — and Bragança sits inside it.'}},
+  pt:{name:'Manguezal', whisper:'Uma floresta que aprendeu a viver na maré.', body:'Floresta entre a terra e o mar. Os manguezais crescem onde poucas árvores resistem: em solo salgado, encharcado e inundado pela maré duas vezes por dia.'},
+  en:{name:'Mangrove forest', whisper:'A forest that learned to live with the tide.', body:'A forest between land and sea. Mangroves grow where few trees can: in salty, waterlogged ground, flooded by the tide twice a day.'}},
  {id:'raizes', color:'#6d8748', bands:0, vein:true, links:['cb8','lama','cb1'],
   pt:{name:'Raízes', whisper:'Onde há raiz, há abrigo.', body:'As raízes aéreas seguram a lama, quebram a força das ondas e formam um berçário protegido para peixes, camarões e caranguejos jovens.'},
   en:{name:'Roots', whisper:'Where there are roots, there is shelter.', body:'Aerial roots hold the mud in place, break the force of the waves and form a sheltered nursery for young fish, shrimp and crabs.'}},
@@ -207,11 +210,11 @@ const ELEMENTS = [
   pt:{name:'Lama & Solo', whisper:'O tesouro está debaixo dos pés.', body:'No solo encharcado, com pouco oxigênio, a matéria orgânica se decompõe muito devagar — e o carbono fica guardado por séculos, até milênios. É aqui que mora a maior parte do carbono azul.'},
   en:{name:'Mud & Soil', whisper:'The treasure lies underfoot.', body:'In waterlogged, low-oxygen soil, organic matter decomposes very slowly — and carbon stays locked away for centuries, even millennia. This is where most blue carbon lives.'}},
  {id:'pessoas', color:'#b5714c', bands:1, links:['cb12','cb13','cb9','cb10'],
-  pt:{name:'Pessoas & Comunidades', whisper:'Gente também é natureza.', body:'Pescadores artesanais, marisqueiras, catadores de caranguejo: comunidades que vivem do manguezal e cuidam dele há gerações. Nas Reservas Extrativistas Marinhas do litoral do Pará, natureza e gente formam um só território.'},
-  en:{name:'People & Communities', whisper:'People are nature too.', body:'Artisanal fishers, shellfish gatherers, crab collectors: communities that have lived from the mangrove, and cared for it, for generations. In the Marine Extractive Reserves of the Pará coast, nature and people form a single territory.'}},
+  pt:{name:'Pessoas & Comunidades', whisper:'Gente também é natureza.', body:'Pescadores artesanais, marisqueiras, catadores de caranguejo: comunidades que vivem do manguezal e cuidam dele há gerações. Onde o mangue é bem cuidado, natureza e gente formam um só território.'},
+  en:{name:'People & Communities', whisper:'People are nature too.', body:'Artisanal fishers, shellfish gatherers, crab collectors: communities that have lived from the mangrove, and cared for it, for generations. Where the mangrove is well cared for, nature and people form a single territory.'}},
  {id:'rio', color:'#3f8c95', bands:2, links:['chuva','mar','cb5','cb7'],
-  pt:{name:'Rio & Estuário', whisper:'Doce e salgado, sem fronteira.', body:'O rio Caeté e tantos outros chegam ao mar devagar, misturando água doce e salgada. Essa mistura — o estuário — está entre os ambientes mais produtivos do planeta.'},
-  en:{name:'River & Estuary', whisper:'Fresh and salt, with no border.', body:'The Caeté and many other rivers reach the sea slowly, blending fresh and salt water. That blend — the estuary — is among the most productive environments on Earth.'}},
+  pt:{name:'Rio & Estuário', whisper:'Doce e salgado, sem fronteira.', body:'Os rios chegam ao mar devagar, misturando água doce e salgada. Essa mistura — o estuário — está entre os ambientes mais produtivos do planeta.'},
+  en:{name:'River & Estuary', whisper:'Fresh and salt, with no border.', body:'Rivers reach the sea slowly, blending fresh and salt water. That blend — the estuary — is among the most productive environments on Earth.'}},
  {id:'mar', color:'#255a78', bands:2, links:['cb7','mare','rio'],
   pt:{name:'Mar', whisper:'Floresta e oceano são um sistema só.', body:'O oceano recebe do manguezal nutrientes e carbono, e devolve larvas, peixes e a própria maré. Ligados pela água, floresta e mar não existem um sem o outro.'},
   en:{name:'Ocean', whisper:'Forest and ocean are one system.', body:'The ocean receives nutrients and carbon from the mangrove, and gives back larvae, fish and the tide itself. Joined by water, forest and sea cannot exist without each other.'}},
@@ -224,7 +227,7 @@ const CENTER = {id:'centro', color:'#f0e4c3', links:['cb1','cb6','cb9','cb12'],
   pt:{name:'Integração', whisper:'Cuidar de uma parte é beneficiar o todo.', body:'No centro da espiral, tudo se encontra. O náutilo cresce câmara por câmara sem abandonar a própria forma — como uma zona úmida saudável, em que natureza, clima, economia e pessoas crescem juntos. É isso um co-benefício.'},
   en:{name:'Integration', whisper:'To care for one part is to benefit the whole.', body:'At the centre of the spiral, everything meets. A nautilus grows chamber by chamber without ever leaving its own form — like a healthy wetland, where nature, climate, economy and people grow together. That is what a co-benefit is.'}};
 
-/* 13 co-benefícios — RASCUNHO. Ordem = do centro da concha para fora. */
+/* Co-benefícios. Ordem = do centro da concha para fora. */
 const COBENEFITS = [
  {id:'cb1', domain:'nature', links:['fauna','mangue','raizes'],
   pt:{name:'Biodiversidade', whisper:'Diversidade é resiliência.', body:'Zonas úmidas abrigam uma enorme variedade de plantas, peixes, crustáceos, aves e microrganismos. Ecossistemas íntegros e diversos resistem melhor às mudanças — e sustentam todos os outros co-benefícios.'},
@@ -242,8 +245,8 @@ const COBENEFITS = [
   pt:{name:'Regimes hidrológicos', whisper:'O caminho das águas.', body:'Zonas úmidas funcionam como esponjas: regulam o fluxo entre rio, maré e lençol freático, filtram a água e amortecem cheias e secas.'},
   en:{name:'Hydrological regimes', whisper:'The pathways of water.', body:'Wetlands work like sponges: they regulate the flow between river, tide and groundwater, filter water and soften both floods and droughts.'}},
  {id:'cb6', domain:'climate', links:['lama','cb3','cb7'],
-  pt:{name:'Estoques de carbono', whisper:'Carbono guardado é clima protegido.', body:'Carbono azul é o carbono guardado pelos ecossistemas costeiros. Nos manguezais amazônicos, a maior parte está no solo — inclusive em camadas profundas que a pesquisa ainda está revelando.'},
-  en:{name:'Carbon stocks', whisper:'Carbon held is climate protected.', body:'Blue carbon is the carbon held by coastal ecosystems. In Amazonian mangroves most of it lies in the soil — including deep layers that research is still uncovering.'}},
+  pt:{name:'Estoques de carbono', whisper:'Carbono guardado é clima protegido.', body:'Carbono azul é o carbono guardado pelos ecossistemas costeiros. Nos manguezais, a maior parte está no solo — inclusive em camadas profundas que a pesquisa ainda está revelando.'},
+  en:{name:'Carbon stocks', whisper:'Carbon held is climate protected.', body:'Blue carbon is the carbon held by coastal ecosystems. In mangroves most of it lies in the soil — including deep layers that research is still uncovering.'}},
  {id:'cb7', domain:'climate', links:['mar','rio','cb6'],
   pt:{name:'Fluxos de carbono & exportação ao oceano', whisper:'Nem todo carbono fica parado.', body:'Parte do carbono viaja com a maré, dissolvida na água, e segue para o oceano. Medir essa exportação lateral é essencial para uma contabilidade de carbono fiel à realidade.'},
   en:{name:'Carbon fluxes & export to the ocean', whisper:'Not all carbon stays still.', body:'Some carbon travels with the tide, dissolved in the water, and moves on to the ocean. Measuring this lateral export is essential for carbon accounting that is true to reality.'}},
@@ -269,28 +272,224 @@ const COBENEFITS = [
 
 const UI = {
  pt:{ soundOff:'♪ Ligar som', soundOn:'♪ Som ligado', hint:'Toque em qualquer peça da mandala',
-  viewCosmos:'Mandala inteira', viewShell:'Mergulhar na concha', legend:'4 domínios · 13 co-benefícios',
-  kindElement:'Elemento da natureza', kindCenter:'O centro', kindCb:'Co-benefício', kindDomain:'Domínio', of:'de', draft:'rascunho',
+  viewCosmos:'Mandala inteira', viewShell:'Mergulhar na concha', legend:'Domínios de co-benefícios',
+  kindElement:'Elemento da natureza', kindCenter:'O centro', kindCb:'Co-benefício', kindDomain:'Domínio', of:'de', draft:'',
   links:'Conectado a', inDomain:'Co-benefícios deste domínio', prev:'← Anterior', next:'Próximo →', auto:'▶ Jornada automática', pause:'❙❙ Pausar', back:'Voltar ao início',
-  introEyebrow:'Uma jornada pelas zonas úmidas', introTitle:'Uma mandala viva',
-  introBody:'Nascida da nossa logo, esta mandala reúne o sol, a lua, a chuva, o mar, a maré, o manguezal e as pessoas. No coração dela, a concha do náutilo guarda os 13 co-benefícios das zonas úmidas, em 4 domínios. Nada aqui existe sozinho: toque em uma peça e veja a que ela se conecta.',
-  introNote:'Rascunho para o grupo: os nomes e a divisão dos 13 co-benefícios foram montados a partir do texto dos domínios no site da conferência e aguardam revisão do time científico.',
+  introEyebrow:'A espiral que liga a zona úmida ao todo, numa mandala viva', introTitle:'A espiral universal',
+  introBody:'Esta mandala reúne o sol, a lua, a chuva, o mar, a maré, o manguezal e as pessoas. No coração dela, a concha do náutilo guarda os co-benefícios das zonas úmidas, porque é assim que eles existem: encaixados uns nos outros, integrando-se uns aos outros. Nada aqui existe sozinho: toque em uma peça e veja a que ela se conecta.',
+  introNote:'',
   start:'Iniciar a jornada', startSound:'Iniciar com som',
   outroEyebrow:'Fim da jornada', outroTitle:'A mandala completa',
-  outroBody:'Sol, maré, lama, floresta, gente, carbono, renda, justiça: vinte e seis peças, um único desenho. Proteger uma zona úmida nunca é só guardar carbono — é manter viva toda essa teia. Essa é a conversa que nos espera em Bragança, de 12 a 14 de novembro de 2026.',
+  outroBody:'Sol, maré, lama, floresta, gente, carbono, renda, justiça: peças distintas, um único desenho. Proteger uma zona úmida nunca é só guardar carbono — é manter viva toda essa teia.',
   aria:'Mandala interativa dos co-benefícios das zonas úmidas' },
  en:{ soundOff:'♪ Turn sound on', soundOn:'♪ Sound on', hint:'Touch any piece of the mandala',
-  viewCosmos:'Whole mandala', viewShell:'Dive into the shell', legend:'4 domains · 13 co-benefits',
-  kindElement:'Element of nature', kindCenter:'The centre', kindCb:'Co-benefit', kindDomain:'Domain', of:'of', draft:'draft',
+  viewCosmos:'Whole mandala', viewShell:'Dive into the shell', legend:'Domains of co-benefits',
+  kindElement:'Element of nature', kindCenter:'The centre', kindCb:'Co-benefit', kindDomain:'Domain', of:'of', draft:'',
   links:'Connected to', inDomain:'Co-benefits in this domain', prev:'← Previous', next:'Next →', auto:'▶ Guided journey', pause:'❙❙ Pause', back:'Back to the start',
-  introEyebrow:'A journey through the wetlands', introTitle:'A living mandala',
-  introBody:'Born from our logo, this mandala gathers the sun, the moon, the rain, the ocean, the tide, the mangrove and the people. At its heart, a nautilus shell holds the 13 co-benefits of wetlands, across 4 domains. Nothing here exists alone: touch a piece and see what it connects to.',
-  introNote:'Draft for the group: the names and grouping of the 13 co-benefits were assembled from the thematic-domain text on the conference website and await review by the science team.',
+  introEyebrow:'The spiral that joins the wetland to the whole, in a living mandala', introTitle:'The universal spiral',
+  introBody:'This mandala gathers the sun, the moon, the rain, the ocean, the tide, the mangrove and the people. At its heart, a nautilus shell holds the co-benefits of wetlands, because that is how they exist: nested within one another, integrating with one another. Nothing here exists alone: touch a piece and see what it connects to.',
+  introNote:'',
   start:'Begin the journey', startSound:'Begin with sound',
   outroEyebrow:'Journey’s end', outroTitle:'The whole mandala',
-  outroBody:'Sun, tide, mud, forest, people, carbon, income, justice: twenty-six pieces, one single drawing. Protecting a wetland is never only about storing carbon — it is about keeping this whole web alive. That is the conversation waiting for us in Bragança, 12–14 November 2026.',
+  outroBody:'Sun, tide, mud, forest, people, carbon, income, justice: distinct pieces, one single drawing. Protecting a wetland is never only about storing carbon — it is about keeping this whole web alive.',
   aria:'Interactive mandala of wetland co-benefits' }
 };
+
+/* ---------- Traduções: espanhol, francês, italiano e japonês ---------- */
+const T = {
+ es:{
+  dom:{
+   nature:{name:'Biodiversidad y Naturaleza', body:'La integridad del ecosistema: biodiversidad, polinización, producción primaria, formación del suelo, ciclo de nutrientes y el camino del agua. Es el suelo vivo del que nacen todos los demás cobeneficios.'},
+   climate:{name:'Clima', body:'El papel de los humedales en la mitigación y la adaptación climática: el carbono guardado, el carbono en movimiento y la protección de la costa, con implicaciones para los planes climáticos nacionales y las metas internacionales.'},
+   economy:{name:'Economía y Producción', body:'El valor económico de lo que el humedal produce y sostiene: productos, ingresos y empleos, y la valoración del carbono y de los demás servicios ecosistémicos.'},
+   social:{name:'Social', body:'Cómo pescadores artesanales, mariscadoras, propietarios y gestores públicos perciben los cobeneficios y los incorporan en sus decisiones, y cómo eso puede convertirse en un indicador medible de justicia climática.'}},
+  el:{
+   sol:{name:'Sol', whisper:'Todo lo que vive es luz transformada.', body:'Toda la energía del manglar empieza aquí. La luz del sol mueve la fotosíntesis, que transforma el dióxido de carbono del aire en hojas, troncos y raíces: el primer paso del carbono azul.'},
+   cosmos:{name:'Cielo y Estrellas', whisper:'Visto desde lejos, todo es uno.', body:'Desde el espacio, las costas de manglar parecen un encaje verde entre el río y el mar. La mandala recuerda que un manglar nunca es un lugar aislado: pertenece a un planeta vivo, a un solo sistema.'},
+   lua:{name:'Luna', whisper:'El ritmo viene de arriba.', body:'La luna tira del océano y marca el compás del manglar. En costas macromareales, el mar sube y baja varios metros dos veces al día, y toda la vida se organiza en torno a ese pulso.'},
+   chuva:{name:'Lluvia', whisper:'El agua siempre vuelve.', body:'La lluvia alimenta los ríos que bajan hasta el estuario, trayendo agua dulce, sedimentos y nutrientes. El humedal nace donde se encuentran el agua del cielo, del río y del mar.'},
+   mangue:{name:'Manglar', whisper:'Un bosque que aprendió a vivir con la marea.', body:'Bosque entre la tierra y el mar. Los manglares crecen donde pocos árboles resisten: en suelo salado, encharcado e inundado por la marea dos veces al día.'},
+   raizes:{name:'Raíces', whisper:'Donde hay raíz, hay refugio.', body:'Las raíces aéreas sujetan el lodo, rompen la fuerza de las olas y forman una guardería protegida para peces, camarones y cangrejos jóvenes.'},
+   fauna:{name:'Vida animal', whisper:'Cada especie es un hilo de la red.', body:'Cangrejos de manglar, ibis escarlata, garzas, peces, ostras, y aves migratorias que cruzan continentes para descansar y alimentarse aquí. Juntas, estas vidas mantienen el manglar funcionando.'},
+   lama:{name:'Lodo y Suelo', whisper:'El tesoro está bajo los pies.', body:'En suelo encharcado y con poco oxígeno, la materia orgánica se descompone muy despacio, y el carbono queda guardado durante siglos, incluso milenios. Aquí vive la mayor parte del carbono azul.'},
+   pessoas:{name:'Personas y Comunidades', whisper:'La gente también es naturaleza.', body:'Pescadores artesanales, mariscadoras, recolectores de cangrejo: comunidades que viven del manglar y lo cuidan desde hace generaciones. Donde el manglar está bien cuidado, naturaleza y gente forman un solo territorio.'},
+   rio:{name:'Río y Estuario', whisper:'Dulce y salado, sin frontera.', body:'Los ríos llegan al mar despacio, mezclando agua dulce y salada. Esa mezcla, el estuario, está entre los ambientes más productivos del planeta.'},
+   mar:{name:'Mar', whisper:'Bosque y océano son un solo sistema.', body:'El océano recibe del manglar nutrientes y carbono, y devuelve larvas, peces y la propia marea. Unidos por el agua, bosque y mar no existen el uno sin el otro.'},
+   mare:{name:'Mareas y Olas', whisper:'Inspira con la pleamar. Espira con la bajamar.', body:'Dos veces al día la marea inunda el bosque y después se retira. Ese ir y venir reparte sedimentos, semillas y alimento: es la respiración del manglar.'}},
+  center:{name:'Integración', whisper:'Cuidar una parte es beneficiar al todo.', body:'En el centro de la espiral todo se encuentra. El nautilo crece cámara a cámara sin abandonar su propia forma, como un humedal sano, donde naturaleza, clima, economía y personas crecen juntos. Eso es un cobeneficio.'},
+  cb:{
+   cb1:{name:'Biodiversidad', whisper:'La diversidad es resiliencia.', body:'Los humedales albergan una enorme variedad de plantas, peces, crustáceos, aves y microorganismos. Los ecosistemas íntegros y diversos resisten mejor los cambios, y sostienen todos los demás cobeneficios.'},
+   cb2:{name:'Polinización', whisper:'Un servicio silencioso.', body:'Abejas y otros insectos, aves y murciélagos visitan las flores del manglar y de los bosques vecinos. Ese trabajo discreto asegura la reproducción de las plantas y, en muchas regiones, la producción de miel.'},
+   cb3:{name:'Producción primaria', whisper:'Luz que se vuelve bosque.', body:'Los manglares están entre los bosques más productivos del planeta: transforman luz, agua y nutrientes en hojas, madera y raíces. Esa materia viva es la base de la red alimentaria del estuario.'},
+   cb4:{name:'Formación del suelo y ciclo de nutrientes', whisper:'El bosque construye su propio suelo.', body:'Caen hojas, crecen raíces, se depositan sedimentos: el manglar forma su propio suelo. En ese proceso, los nutrientes circulan entre lodo, agua y seres vivos, manteniendo fértil el sistema.'},
+   cb5:{name:'Regímenes hidrológicos', whisper:'El camino de las aguas.', body:'Los humedales funcionan como esponjas: regulan el flujo entre río, marea y agua subterránea, filtran el agua y amortiguan crecidas y sequías.'},
+   cb6:{name:'Reservas de carbono', whisper:'Carbono guardado es clima protegido.', body:'El carbono azul es el carbono guardado por los ecosistemas costeros. En los manglares, la mayor parte está en el suelo, incluso en capas profundas que la investigación todavía está revelando.'},
+   cb7:{name:'Flujos de carbono y exportación al océano', whisper:'No todo el carbono se queda quieto.', body:'Parte del carbono viaja con la marea, disuelto en el agua, y sigue hacia el océano. Medir esa exportación lateral es esencial para una contabilidad del carbono fiel a la realidad.'},
+   cb8:{name:'Protección frente a tormentas e inundaciones', whisper:'Una muralla viva.', body:'Troncos y raíces disipan la energía de las olas y retienen los sedimentos, reduciendo la erosión y el impacto de tormentas e inundaciones sobre quienes viven en la costa.'},
+   cb9:{name:'Productos de los humedales', whisper:'El manglar pone comida en la mesa.', body:'Cangrejo, pescado, camarón, ostra, mejillón: el manglar alimenta familias y abastece mercados. Cuantificar ese valor muestra cuánto depende la economía local de un ecosistema sano.'},
+   cb10:{name:'Generación de ingresos', whisper:'Bosque en pie, ingreso en casa.', body:'De la pesca artesanal al turismo de base comunitaria, el ingreso de muchas familias nace de un manglar conservado. Valorar el carbono y los demás servicios ecosistémicos puede abrir nuevas fuentes, siempre que lleguen a quienes cuidan.'},
+   cb11:{name:'Empleo y multiplicador del empleo', whisper:'Un trabajo sostiene a otros.', body:'Cada ocupación ligada al humedal sostiene otras a su alrededor: en el transporte, el comercio, la transformación. Ese efecto multiplicador revela el peso real del manglar en la economía regional.'},
+   cb12:{name:'Saberes y modos de vida', whisper:'Escuchar también es hacer ciencia.', body:'Pescadores, mariscadoras, propietarios y gestores perciben y usan los cobeneficios de maneras distintas. Escuchar esos saberes es parte de la ciencia, y condición para una buena gestión.'},
+   cb13:{name:'Justicia climática', whisper:'Quien cuida, decide también.', body:'Quien protege el manglar debe participar de las decisiones y de los beneficios. Los cobeneficios sociales pueden volverse indicadores medibles de justicia climática, incluso en la gobernanza de los mercados de carbono azul.'}},
+  ui:{soundOff:'♪ Activar sonido', soundOn:'♪ Sonido activado', hint:'Toca cualquier pieza de la mandala',
+   viewCosmos:'Mandala entera', viewShell:'Entrar en la concha', legend:'Dominios de cobeneficios',
+   kindElement:'Elemento de la naturaleza', kindCenter:'El centro', kindCb:'Cobeneficio', kindDomain:'Dominio', of:'de', draft:'',
+   links:'Conectado con', inDomain:'Cobeneficios de este dominio', prev:'← Anterior', next:'Siguiente →', auto:'▶ Viaje guiado', pause:'❙❙ Pausar', back:'Volver al inicio',
+   introEyebrow:'La espiral que une el humedal con el todo, en una mandala viva', introTitle:'La espiral universal',
+   introBody:'Esta mandala reúne el sol, la luna, la lluvia, el mar, la marea, el manglar y las personas. En su corazón, la concha del nautilo guarda los cobeneficios de los humedales, porque así es como existen: encajados unos en otros, integrándose unos con otros. Nada aquí existe solo: toca una pieza y mira con qué se conecta.',
+   introNote:'', start:'Comenzar el viaje', startSound:'Comenzar con sonido',
+   outroEyebrow:'Fin del viaje', outroTitle:'La mandala completa',
+   outroBody:'Sol, marea, lodo, bosque, gente, carbono, ingreso, justicia: piezas distintas, un solo dibujo. Proteger un humedal nunca es solo guardar carbono: es mantener viva toda esa red.',
+   aria:'Mandala interactiva de los cobeneficios de los humedales'}
+ },
+ fr:{
+  dom:{
+   nature:{name:'Biodiversité et Nature', body:"L'intégrité de l'écosystème : biodiversité, pollinisation, production primaire, formation du sol, cycle des nutriments et cheminement de l'eau. C'est le socle vivant d'où naissent tous les autres cobénéfices."},
+   climate:{name:'Climat', body:"Le rôle des zones humides dans l'atténuation et l'adaptation climatiques : le carbone stocké, le carbone en mouvement et la protection du littoral, avec des implications pour les plans climatiques nationaux et les objectifs internationaux."},
+   economy:{name:'Économie et Production', body:"La valeur économique de ce que la zone humide produit et fait vivre : produits, revenus et emplois, ainsi que la valorisation du carbone et des autres services écosystémiques."},
+   social:{name:'Social', body:"Comment les pêcheurs artisanaux, les ramasseuses de coquillages, les propriétaires et les gestionnaires publics perçoivent les cobénéfices et les intègrent à leurs décisions, et comment cela peut devenir un indicateur mesurable de justice climatique."}},
+  el:{
+   sol:{name:'Soleil', whisper:'Tout ce qui vit est de la lumière transformée.', body:"Toute l'énergie de la mangrove commence ici. La lumière du soleil anime la photosynthèse, qui transforme le dioxyde de carbone de l'air en feuilles, en troncs et en racines : le premier pas du carbone bleu."},
+   cosmos:{name:'Ciel et Étoiles', whisper:'Vu d\u2019assez loin, tout ne fait qu\u2019un.', body:"Depuis l'espace, les côtes à mangrove ressemblent à une dentelle verte entre le fleuve et la mer. Le mandala rappelle qu'une mangrove n'est jamais un lieu isolé : elle appartient à une planète vivante, à un seul système."},
+   lua:{name:'Lune', whisper:'Le rythme vient d\u2019en haut.', body:"La lune tire l'océan et donne la cadence de la mangrove. Sur les côtes à fort marnage, la mer monte et descend de plusieurs mètres, deux fois par jour, et toute la vie s'organise autour de ce pouls."},
+   chuva:{name:'Pluie', whisper:'L\u2019eau revient toujours.', body:"La pluie alimente les fleuves qui descendent vers l'estuaire, apportant eau douce, sédiments et nutriments. Une zone humide naît là où se rencontrent l'eau du ciel, du fleuve et de la mer."},
+   mangue:{name:'Mangrove', whisper:'Une forêt qui a appris à vivre avec la marée.', body:"Forêt entre la terre et la mer. Les mangroves poussent là où peu d'arbres résistent : dans un sol salé, gorgé d'eau et inondé par la marée deux fois par jour."},
+   raizes:{name:'Racines', whisper:'Là où il y a des racines, il y a un abri.', body:"Les racines aériennes retiennent la vase, brisent la force des vagues et forment une nurserie protégée pour les jeunes poissons, crevettes et crabes."},
+   fauna:{name:'Faune', whisper:'Chaque espèce est un fil de la toile.', body:"Crabes de mangrove, ibis rouges, hérons, poissons, huîtres, et oiseaux migrateurs qui traversent des continents pour se reposer et se nourrir ici. Ensemble, ces vies font fonctionner la mangrove."},
+   lama:{name:'Vase et Sol', whisper:'Le trésor est sous nos pieds.', body:"Dans un sol gorgé d'eau et pauvre en oxygène, la matière organique se décompose très lentement, et le carbone reste enfermé pendant des siècles, voire des millénaires. C'est là que vit l'essentiel du carbone bleu."},
+   pessoas:{name:'Personnes et Communautés', whisper:'Les humains aussi sont la nature.', body:"Pêcheurs artisanaux, ramasseuses de coquillages, ramasseurs de crabes : des communautés qui vivent de la mangrove et en prennent soin depuis des générations. Là où la mangrove est bien entretenue, nature et habitants forment un seul territoire."},
+   rio:{name:'Fleuve et Estuaire', whisper:'Douce et salée, sans frontière.', body:"Les fleuves atteignent la mer lentement, mêlant eau douce et eau salée. Ce mélange, l'estuaire, compte parmi les milieux les plus productifs de la planète."},
+   mar:{name:'Mer', whisper:'La forêt et l\u2019océan ne font qu\u2019un système.', body:"L'océan reçoit de la mangrove nutriments et carbone, et rend larves, poissons et la marée elle-même. Reliées par l'eau, forêt et mer n'existent pas l'une sans l'autre."},
+   mare:{name:'Marées et Vagues', whisper:'Inspire avec le flux. Expire avec le reflux.', body:"Deux fois par jour, la marée inonde la forêt puis se retire. Ce va-et-vient répartit sédiments, graines et nourriture : c'est la respiration de la mangrove."}},
+  center:{name:'Intégration', whisper:'Prendre soin d\u2019une partie, c\u2019est bénéficier au tout.', body:"Au centre de la spirale, tout se rejoint. Le nautile grandit loge après loge sans jamais quitter sa propre forme, comme une zone humide en bonne santé, où nature, climat, économie et personnes grandissent ensemble. C'est cela, un cobénéfice."},
+  cb:{
+   cb1:{name:'Biodiversité', whisper:'La diversité est une résilience.', body:"Les zones humides abritent une immense variété de plantes, de poissons, de crustacés, d'oiseaux et de micro-organismes. Des écosystèmes intacts et divers résistent mieux au changement, et soutiennent tous les autres cobénéfices."},
+   cb2:{name:'Pollinisation', whisper:'Un service silencieux.', body:"Abeilles et autres insectes, oiseaux et chauves-souris visitent les fleurs de la mangrove et des forêts voisines. Ce travail discret assure la reproduction des plantes et, dans bien des régions, la production de miel."},
+   cb3:{name:'Production primaire', whisper:'La lumière devenue forêt.', body:"Les mangroves comptent parmi les forêts les plus productives de la planète : elles transforment lumière, eau et nutriments en feuilles, en bois et en racines. Cette matière vivante est la base du réseau alimentaire de l'estuaire."},
+   cb4:{name:'Formation du sol et cycle des nutriments', whisper:'La forêt construit son propre sol.', body:"Les feuilles tombent, les racines poussent, les sédiments se déposent : la mangrove fabrique son propre sol. Au passage, les nutriments circulent entre vase, eau et êtres vivants, et le système reste fertile."},
+   cb5:{name:'Régimes hydrologiques', whisper:'Le chemin des eaux.', body:"Les zones humides fonctionnent comme des éponges : elles régulent les échanges entre fleuve, marée et nappe souterraine, filtrent l'eau et amortissent crues et sécheresses."},
+   cb6:{name:'Stocks de carbone', whisper:'Carbone gardé, climat protégé.', body:"Le carbone bleu est le carbone retenu par les écosystèmes côtiers. Dans les mangroves, l'essentiel se trouve dans le sol, y compris dans des couches profondes que la recherche commence seulement à révéler."},
+   cb7:{name:'Flux de carbone et export vers l\u2019océan', whisper:'Tout le carbone ne reste pas en place.', body:"Une partie du carbone voyage avec la marée, dissoute dans l'eau, et gagne l'océan. Mesurer cet export latéral est essentiel pour une comptabilité du carbone fidèle à la réalité."},
+   cb8:{name:'Protection contre tempêtes et inondations', whisper:'Une digue vivante.', body:"Troncs et racines dissipent l'énergie des vagues et retiennent les sédiments, réduisant l'érosion et l'impact des tempêtes et des inondations sur les habitants du littoral."},
+   cb9:{name:'Produits des zones humides', whisper:'La mangrove met à manger sur la table.', body:"Crabe, poisson, crevette, huître, moule : la mangrove nourrit des familles et approvisionne des marchés. Chiffrer cette valeur montre à quel point l'économie locale dépend d'un écosystème en bonne santé."},
+   cb10:{name:'Génération de revenus', whisper:'Forêt debout, revenu à la maison.', body:"De la pêche artisanale au tourisme communautaire, le revenu de nombreuses familles naît d'une mangrove préservée. Valoriser le carbone et les autres services écosystémiques peut ouvrir de nouvelles sources, à condition qu'elles parviennent à celles et ceux qui en prennent soin."},
+   cb11:{name:'Emplois et multiplicateur d\u2019emploi', whisper:'Un emploi en fait vivre d\u2019autres.', body:"Chaque activité liée à la zone humide en soutient d'autres autour d'elle : transport, commerce, transformation. Cet effet multiplicateur révèle le poids réel de la mangrove dans l'économie régionale."},
+   cb12:{name:'Savoirs et modes de vie', whisper:'Écouter, c\u2019est aussi faire de la science.', body:"Pêcheurs, ramasseuses de coquillages, propriétaires et gestionnaires perçoivent et utilisent les cobénéfices de manières différentes. Écouter ces savoirs fait partie de la science, et conditionne une bonne gestion."},
+   cb13:{name:'Justice climatique', whisper:'Celles et ceux qui prennent soin décident aussi.', body:"Celles et ceux qui protègent la mangrove doivent participer aux décisions et aux bénéfices. Les cobénéfices sociaux peuvent devenir des indicateurs mesurables de justice climatique, y compris dans la gouvernance des marchés du carbone bleu."}},
+  ui:{soundOff:'♪ Activer le son', soundOn:'♪ Son activé', hint:'Touchez n\u2019importe quelle pièce du mandala',
+   viewCosmos:'Mandala entier', viewShell:'Entrer dans la coquille', legend:'Domaines de cobénéfices',
+   kindElement:'Élément de la nature', kindCenter:'Le centre', kindCb:'Cobénéfice', kindDomain:'Domaine', of:'de', draft:'',
+   links:'Relié à', inDomain:'Cobénéfices de ce domaine', prev:'← Précédent', next:'Suivant →', auto:'▶ Parcours guidé', pause:'❙❙ Pause', back:'Revenir au début',
+   introEyebrow:'La spirale qui relie la zone humide au tout, dans un mandala vivant', introTitle:'La spirale universelle',
+   introBody:"Ce mandala réunit le soleil, la lune, la pluie, la mer, la marée, la mangrove et les personnes. En son cœur, la coquille du nautile garde les cobénéfices des zones humides, car c'est ainsi qu'ils existent : emboîtés les uns dans les autres, s'intégrant les uns aux autres. Rien ici n'existe seul : touchez une pièce et voyez à quoi elle se relie.",
+   introNote:'', start:'Commencer le voyage', startSound:'Commencer avec le son',
+   outroEyebrow:'Fin du voyage', outroTitle:'Le mandala complet',
+   outroBody:"Soleil, marée, vase, forêt, personnes, carbone, revenu, justice : des pièces distinctes, un seul dessin. Protéger une zone humide, ce n'est jamais seulement stocker du carbone : c'est garder vivante toute cette toile.",
+   aria:'Mandala interactif des cobénéfices des zones humides'}
+ },
+ it:{
+  dom:{
+   nature:{name:'Biodiversità e Natura', body:"L'integrità dell'ecosistema: biodiversità, impollinazione, produzione primaria, formazione del suolo, ciclo dei nutrienti e percorso delle acque. È il terreno vivo da cui nascono tutti gli altri cobenefici."},
+   climate:{name:'Clima', body:"Il ruolo delle zone umide nella mitigazione e nell'adattamento climatico: il carbonio immagazzinato, il carbonio in movimento e la protezione della costa, con implicazioni per i piani climatici nazionali e gli obiettivi internazionali."},
+   economy:{name:'Economia e Produzione', body:"Il valore economico di ciò che la zona umida produce e sostiene: prodotti, reddito e lavoro, e la valutazione del carbonio e degli altri servizi ecosistemici."},
+   social:{name:'Sociale', body:"Come pescatori artigianali, raccoglitrici di molluschi, proprietari e amministratori pubblici percepiscono i cobenefici e li portano nelle proprie decisioni, e come questo possa diventare un indicatore misurabile di giustizia climatica."}},
+  el:{
+   sol:{name:'Sole', whisper:'Tutto ciò che vive è luce trasformata.', body:"Tutta l'energia della mangrovia comincia qui. La luce del sole muove la fotosintesi, che trasforma l'anidride carbonica dell'aria in foglie, tronchi e radici: il primo passo del carbonio blu."},
+   cosmos:{name:'Cielo e Stelle', whisper:'Visto da lontano, tutto è uno.', body:"Dallo spazio, le coste a mangrovia sembrano un merletto verde tra il fiume e il mare. Il mandala ricorda che una mangrovia non è mai un luogo isolato: appartiene a un pianeta vivo, a un solo sistema."},
+   lua:{name:'Luna', whisper:'Il ritmo viene dall\u2019alto.', body:"La luna tira l'oceano e detta il tempo della mangrovia. Nelle coste macrotidali il mare sale e scende di diversi metri, due volte al giorno, e tutta la vita si organizza attorno a questo battito."},
+   chuva:{name:'Pioggia', whisper:'L\u2019acqua torna sempre.', body:"La pioggia alimenta i fiumi che scendono verso l'estuario, portando acqua dolce, sedimenti e nutrienti. Una zona umida nasce dove si incontrano l'acqua del cielo, del fiume e del mare."},
+   mangue:{name:'Mangrovia', whisper:'Una foresta che ha imparato a vivere con la marea.', body:"Foresta tra la terra e il mare. Le mangrovie crescono dove pochi alberi resistono: in un suolo salato, intriso d'acqua e inondato dalla marea due volte al giorno."},
+   raizes:{name:'Radici', whisper:'Dove c\u2019è radice, c\u2019è riparo.', body:"Le radici aeree trattengono il fango, spezzano la forza delle onde e formano una nursery protetta per pesci, gamberi e granchi giovani."},
+   fauna:{name:'Fauna', whisper:'Ogni specie è un filo della rete.', body:"Granchi di mangrovia, ibis scarlatti, aironi, pesci, ostriche, e uccelli migratori che attraversano continenti per riposare e nutrirsi qui. Insieme, queste vite tengono in funzione la mangrovia."},
+   lama:{name:'Fango e Suolo', whisper:'Il tesoro è sotto i piedi.', body:"In un suolo intriso d'acqua e povero di ossigeno, la materia organica si decompone molto lentamente, e il carbonio resta custodito per secoli, persino millenni. È qui che vive la maggior parte del carbonio blu."},
+   pessoas:{name:'Persone e Comunità', whisper:'Anche le persone sono natura.', body:"Pescatori artigianali, raccoglitrici di molluschi, raccoglitori di granchi: comunità che vivono della mangrovia e se ne prendono cura da generazioni. Dove la mangrovia è ben curata, natura e persone formano un solo territorio."},
+   rio:{name:'Fiume ed Estuario', whisper:'Dolce e salata, senza confine.', body:"I fiumi raggiungono il mare lentamente, mescolando acqua dolce e salata. Quella mescolanza, l'estuario, è tra gli ambienti più produttivi del pianeta."},
+   mar:{name:'Mare', whisper:'Foresta e oceano sono un solo sistema.', body:"L'oceano riceve dalla mangrovia nutrienti e carbonio, e restituisce larve, pesci e la marea stessa. Uniti dall'acqua, foresta e mare non esistono l'uno senza l'altro."},
+   mare:{name:'Maree e Onde', whisper:'Inspira con il flusso. Espira con il riflusso.', body:"Due volte al giorno la marea inonda la foresta e poi si ritira. Questo andirivieni distribuisce sedimenti, semi e cibo: è il respiro della mangrovia."}},
+  center:{name:'Integrazione', whisper:'Prendersi cura di una parte giova al tutto.', body:"Al centro della spirale tutto si incontra. Il nautilo cresce camera dopo camera senza mai abbandonare la propria forma, come una zona umida sana, dove natura, clima, economia e persone crescono insieme. Questo è un cobeneficio."},
+  cb:{
+   cb1:{name:'Biodiversità', whisper:'La diversità è resilienza.', body:"Le zone umide ospitano un'enorme varietà di piante, pesci, crostacei, uccelli e microrganismi. Ecosistemi integri e diversi resistono meglio al cambiamento, e sostengono tutti gli altri cobenefici."},
+   cb2:{name:'Impollinazione', whisper:'Un servizio silenzioso.', body:"Api e altri insetti, uccelli e pipistrelli visitano i fiori della mangrovia e dei boschi vicini. Questo lavoro discreto assicura la riproduzione delle piante e, in molte regioni, la produzione di miele."},
+   cb3:{name:'Produzione primaria', whisper:'Luce che diventa foresta.', body:"Le mangrovie sono tra le foreste più produttive del pianeta: trasformano luce, acqua e nutrienti in foglie, legno e radici. Quella materia viva è la base della rete alimentare dell'estuario."},
+   cb4:{name:'Formazione del suolo e ciclo dei nutrienti', whisper:'La foresta costruisce il proprio suolo.', body:"Cadono foglie, crescono radici, si depositano sedimenti: la mangrovia forma il proprio suolo. In questo processo i nutrienti circolano tra fango, acqua ed esseri viventi, mantenendo fertile il sistema."},
+   cb5:{name:'Regimi idrologici', whisper:'Il cammino delle acque.', body:"Le zone umide funzionano come spugne: regolano il flusso tra fiume, marea e falda, filtrano l'acqua e attenuano piene e siccità."},
+   cb6:{name:'Stock di carbonio', whisper:'Carbonio custodito è clima protetto.', body:"Il carbonio blu è il carbonio trattenuto dagli ecosistemi costieri. Nelle mangrovie la maggior parte si trova nel suolo, anche in strati profondi che la ricerca sta ancora rivelando."},
+   cb7:{name:'Flussi di carbonio ed esportazione verso l\u2019oceano', whisper:'Non tutto il carbonio resta fermo.', body:"Parte del carbonio viaggia con la marea, disciolto nell'acqua, e prosegue verso l'oceano. Misurare questa esportazione laterale è essenziale per una contabilità del carbonio fedele alla realtà."},
+   cb8:{name:'Protezione da tempeste e inondazioni', whisper:'Una barriera viva.', body:"Tronchi e radici dissipano l'energia delle onde e trattengono i sedimenti, riducendo l'erosione e l'impatto di tempeste e inondazioni su chi vive lungo la costa."},
+   cb9:{name:'Prodotti delle zone umide', whisper:'La mangrovia porta cibo in tavola.', body:"Granchio, pesce, gambero, ostrica, cozza: la mangrovia nutre famiglie e rifornisce mercati. Quantificare questo valore mostra quanto l'economia locale dipenda da un ecosistema sano."},
+   cb10:{name:'Generazione di reddito', whisper:'Foresta in piedi, reddito in casa.', body:"Dalla pesca artigianale al turismo di comunità, il reddito di molte famiglie nasce da una mangrovia conservata. Valorizzare il carbonio e gli altri servizi ecosistemici può aprire nuove fonti, purché arrivino a chi se ne prende cura."},
+   cb11:{name:'Lavoro e moltiplicatore occupazionale', whisper:'Un lavoro ne sostiene altri.', body:"Ogni attività legata alla zona umida ne sostiene altre attorno a sé: nel trasporto, nel commercio, nella trasformazione. Questo effetto moltiplicatore rivela il peso reale della mangrovia nell'economia regionale."},
+   cb12:{name:'Saperi e modi di vita', whisper:'Ascoltare è anche fare scienza.', body:"Pescatori, raccoglitrici di molluschi, proprietari e amministratori percepiscono e usano i cobenefici in modi diversi. Ascoltare questi saperi fa parte della scienza, ed è condizione per una buona gestione."},
+   cb13:{name:'Giustizia climatica', whisper:'Chi se ne prende cura decide insieme.', body:"Chi protegge la mangrovia deve partecipare alle decisioni e ai benefici. I cobenefici sociali possono diventare indicatori misurabili di giustizia climatica, anche nella governance dei mercati del carbonio blu."}},
+  ui:{soundOff:'♪ Attiva l\u2019audio', soundOn:'♪ Audio attivo', hint:'Tocca una qualsiasi parte del mandala',
+   viewCosmos:'Mandala intero', viewShell:'Entra nella conchiglia', legend:'Ambiti dei cobenefici',
+   kindElement:'Elemento della natura', kindCenter:'Il centro', kindCb:'Cobeneficio', kindDomain:'Ambito', of:'di', draft:'',
+   links:'Collegato a', inDomain:'Cobenefici di questo ambito', prev:'← Precedente', next:'Successivo →', auto:'▶ Viaggio guidato', pause:'❙❙ Pausa', back:'Torna all\u2019inizio',
+   introEyebrow:'La spirale che lega la zona umida al tutto, in un mandala vivo', introTitle:'La spirale universale',
+   introBody:"Questo mandala riunisce il sole, la luna, la pioggia, il mare, la marea, la mangrovia e le persone. Nel suo cuore, la conchiglia del nautilo custodisce i cobenefici delle zone umide, perché è così che esistono: incastrati l'uno nell'altro, integrandosi l'uno con l'altro. Nulla qui esiste da solo: tocca una parte e guarda a cosa si collega.",
+   introNote:'', start:'Inizia il viaggio', startSound:'Inizia con l\u2019audio',
+   outroEyebrow:'Fine del viaggio', outroTitle:'Il mandala completo',
+   outroBody:"Sole, marea, fango, foresta, persone, carbonio, reddito, giustizia: parti distinte, un solo disegno. Proteggere una zona umida non è mai solo immagazzinare carbonio: è tenere viva tutta questa trama.",
+   aria:'Mandala interattivo dei cobenefici delle zone umide'}
+ },
+ ja:{
+  dom:{
+   nature:{name:'生物多様性と自然', body:'生態系の健全さ。生物多様性、送粉、一次生産、土壌の形成、栄養塩の循環、そして水のめぐり。ほかのすべてのコベネフィットが生まれる、生きた土台です。'},
+   climate:{name:'気候', body:'気候の緩和と適応における湿地の役割。蓄えられた炭素、動く炭素、そして守られる海岸。国の気候計画や国際目標にもつながります。'},
+   economy:{name:'経済と生産', body:'湿地が生み、支えるものの経済的な価値。産物、所得、雇用、そして炭素やその他の生態系サービスの価値づけ。'},
+   social:{name:'社会', body:'小規模漁業者、貝採りの女性たち、土地所有者、行政がコベネフィットをどう捉え、どう意思決定に取り入れるか。そしてそれが、気候正義の測れる指標になりうること。'}},
+  el:{
+   sol:{name:'太陽', whisper:'生きているものはすべて、かたちを変えた光。', body:'マングローブのエネルギーはすべてここから始まります。太陽の光が光合成を動かし、空気中の二酸化炭素を葉や幹や根に変える。ブルーカーボンの最初の一歩です。'},
+   cosmos:{name:'空と星', whisper:'遠くから見れば、すべてはひとつ。', body:'宇宙から見ると、マングローブの海岸は川と海のあいだに広がる緑のレースのようです。この曼荼羅は、マングローブが孤立した場所ではなく、ひとつの生きた惑星、ひとつの系に属していることを思い出させます。'},
+   lua:{name:'月', whisper:'リズムは空から来る。', body:'月が海を引き、マングローブの拍子をつくります。潮差の大きい海岸では、海は一日に二度、数メートルも上下し、すべての命がその脈動を軸に営まれています。'},
+   chuva:{name:'雨', whisper:'水はいつも還ってくる。', body:'雨は川を養い、川は河口へと下りながら、淡水と土砂と栄養塩を運びます。空の水、川の水、海の水が出会うところに湿地が生まれます。'},
+   mangue:{name:'マングローブ林', whisper:'潮とともに生きることを覚えた森。', body:'陸と海のあいだの森。マングローブは、塩を含み、水に浸かり、一日に二度潮に沈む土地という、ほとんどの木が育たない場所で育ちます。'},
+   raizes:{name:'根', whisper:'根のあるところに、すみかがある。', body:'空中に張り出した根が泥を留め、波の力を和らげ、稚魚やエビ、カニの子どもたちのための守られた育ち場をつくります。'},
+   fauna:{name:'動物たち', whisper:'どの種も、網の目の一本の糸。', body:'マングローブガニ、ショウジョウトキ、サギ、魚、カキ。そして大陸を越えてここで休み、餌をとる渡り鳥。これらの命が合わさって、マングローブは働きつづけます。'},
+   lama:{name:'泥と土壌', whisper:'宝は足もとにある。', body:'水に浸かり酸素の乏しい土のなかでは、有機物の分解がとてもゆっくり進み、炭素は何世紀も、ときに何千年も閉じ込められたままになります。ブルーカーボンの大半はここにあります。'},
+   pessoas:{name:'人と地域', whisper:'人もまた自然の一部。', body:'小規模漁業者、貝採りの女性たち、カニ採りの人たち。何世代にもわたってマングローブに生かされ、またそれを守ってきた人びとです。手入れの行き届いたマングローブでは、自然と人はひとつの土地をなしています。'},
+   rio:{name:'川と河口', whisper:'淡水と海水に、境はない。', body:'川はゆっくりと海にたどり着き、淡水と海水を混ぜ合わせます。その混じり合い、すなわち河口域は、地球でもっとも生産力の高い環境のひとつです。'},
+   mar:{name:'海', whisper:'森と海はひとつの系。', body:'海はマングローブから栄養塩と炭素を受け取り、幼生や魚、そして潮そのものを返します。水で結ばれた森と海は、どちらか一方だけでは存在できません。'},
+   mare:{name:'潮と波', whisper:'満ち潮とともに吸い、引き潮とともに吐く。', body:'一日に二度、潮が森を満たし、そして引いていきます。この行き来が土砂と種子と餌を運び広げる。マングローブの呼吸です。'}},
+  center:{name:'統合', whisper:'一部を大切にすることは、全体を豊かにすること。', body:'螺旋の中心で、すべてが出会います。オウムガイは自らのかたちを保ったまま、部屋をひとつずつ足して育ちます。健やかな湿地も同じで、自然と気候と経済と人がともに育ちます。それがコベネフィットです。'},
+  cb:{
+   cb1:{name:'生物多様性', whisper:'多様であることが、しなやかさ。', body:'湿地は、植物、魚、甲殻類、鳥、微生物のきわめて多様な生きものを育みます。健全で多様な生態系ほど変化に強く、ほかのすべてのコベネフィットを支えます。'},
+   cb2:{name:'送粉', whisper:'静かな働き。', body:'ミツバチをはじめとする昆虫、鳥、コウモリが、マングローブや近くの森の花を訪れます。この目立たない働きが植物の繁殖を支え、多くの地域では蜂蜜の生産にもつながります。'},
+   cb3:{name:'一次生産', whisper:'森になる光。', body:'マングローブは地球でもっとも生産力の高い森のひとつで、光と水と栄養塩を葉や材や根に変えます。その生きた物質が、河口域の食物網の土台になります。'},
+   cb4:{name:'土壌の形成と栄養塩の循環', whisper:'森はみずから大地をつくる。', body:'葉が落ち、根が伸び、土砂が積もる。こうしてマングローブは自分の土壌をつくります。その過程で栄養塩が泥と水と生きもののあいだをめぐり、系を豊かに保ちます。'},
+   cb5:{name:'水文環境', whisper:'水のゆくみち。', body:'湿地はスポンジのように働きます。川と潮と地下水のあいだの流れを調え、水を濾し、洪水と渇水の両方をやわらげます。'},
+   cb6:{name:'炭素の蓄積', whisper:'蓄えられた炭素は、守られた気候。', body:'ブルーカーボンとは、沿岸の生態系が蓄える炭素のことです。マングローブではその大半が土壌にあり、研究がいま明らかにしつつある深い層にも及びます。'},
+   cb7:{name:'炭素の流れと海への輸送', whisper:'炭素はとどまるだけではない。', body:'炭素の一部は水に溶けて潮とともに運ばれ、海へと向かいます。この横方向の輸送を測ることは、実態に忠実な炭素勘定に欠かせません。'},
+   cb8:{name:'高潮と洪水からの防護', whisper:'生きている堤防。', body:'幹と根が波のエネルギーを和らげ、土砂をつなぎとめることで、侵食を抑え、海岸に暮らす人びとへの高潮や洪水の影響を小さくします。'},
+   cb9:{name:'湿地の産物', whisper:'マングローブが食卓を満たす。', body:'カニ、魚、エビ、カキ、ムール貝。マングローブは家族を養い、市場を支えます。その価値を数で示すことで、地域経済が健全な生態系にどれほど支えられているかが見えてきます。'},
+   cb10:{name:'所得の創出', whisper:'森が立っていれば、暮らしが立つ。', body:'小規模漁業から地域主体の観光まで、多くの家族の収入は守られたマングローブから生まれます。炭素やその他の生態系サービスを価値づけることは新しい収入源になりえます。ただし、それが守り手に届くことが条件です。'},
+   cb11:{name:'雇用と雇用の波及', whisper:'ひとつの仕事が、ほかの仕事を支える。', body:'湿地に結びついた仕事は、運搬、流通、加工など、周囲の仕事を支えます。この波及効果が、地域経済におけるマングローブの実際の重みを映し出します。'},
+   cb12:{name:'知恵と暮らしのかたち', whisper:'聴くこともまた、科学である。', body:'漁業者、貝採りの人たち、土地所有者、行政は、コベネフィットをそれぞれ異なるかたちで捉え、用いています。その知恵に耳を傾けることは科学の一部であり、良い管理の条件でもあります。'},
+   cb13:{name:'気候正義', whisper:'守る人が、ともに決める。', body:'マングローブを守る人びとは、決定にも利益にも関わるべきです。社会的なコベネフィットは、ブルーカーボン市場のガバナンスも含め、気候正義の測れる指標になりえます。'}},
+  ui:{soundOff:'♪ 音を出す', soundOn:'♪ 音が出ています', hint:'曼荼羅のどこかに触れてみてください',
+   viewCosmos:'曼荼羅ぜんたい', viewShell:'殻のなかへ', legend:'コベネフィットの領域',
+   kindElement:'自然の要素', kindCenter:'中心', kindCb:'コベネフィット', kindDomain:'領域', of:'／', draft:'',
+   links:'つながっているもの', inDomain:'この領域のコベネフィット', prev:'← 前へ', next:'次へ →', auto:'▶ 自動でめぐる', pause:'❙❙ 一時停止', back:'はじめに戻る',
+   introEyebrow:'湿地と全体をつなぐ螺旋、生きている曼荼羅として', introTitle:'普遍の螺旋',
+   introBody:'この曼荼羅には、太陽、月、雨、海、潮、マングローブ、そして人が集まっています。その中心では、オウムガイの殻が湿地のコベネフィットを抱いています。コベネフィットとは、そのように存在するものだからです。互いに入れ子になり、互いに溶け合いながら。ここにあるものは何ひとつ単独では存在しません。どれかに触れて、何とつながっているか見てみてください。',
+   introNote:'', start:'旅をはじめる', startSound:'音とともにはじめる',
+   outroEyebrow:'旅のおわり', outroTitle:'曼荼羅のぜんたい',
+   outroBody:'太陽、潮、泥、森、人、炭素、所得、正義。別々の要素が、ひとつの絵をなしています。湿地を守るとは、炭素を蓄えることだけではなく、この網の目ぜんたいを生かしつづけることです。',
+   aria:'湿地のコベネフィットを示すインタラクティブな曼荼羅'}
+ }
+};
+/* aplica as traduções às estruturas de dados */
+(function(){
+  for(const lg in T){
+    const d=T[lg];
+    for(const k in d.dom) DOMAINS[k][lg]=d.dom[k];
+    ELEMENTS.forEach(e=>{ if(d.el[e.id]) e[lg]=d.el[e.id]; });
+    CENTER[lg]=d.center;
+    COBENEFITS.forEach(c=>{ if(d.cb[c.id]) c[lg]=d.cb[c.id]; });
+    UI[lg]=d.ui;
+  }
+})();
+
 </script>
 <script>
 (function(){
@@ -357,7 +556,7 @@ function makePiece(parent,tag,attrs,item,cls=''){
   return p;}
 
 function build(){
-  // rim: 13 seeds and 4 cardinal marks
+  // rim: seeds and cardinal marks
   el('circle',{r:497,fill:'none',stroke:'#f2eada','stroke-opacity':.28,'stroke-width':1.2},gRim);
   for(let i=0;i<13;i++){const a=-Math.PI/2+i*2*Math.PI/13;el('circle',{cx:f(497*Math.cos(a)),cy:f(497*Math.sin(a)),r:4.2,fill:'#f2eada','fill-opacity':.75},gRim);}
   el('circle',{r:482,fill:'#06141d'},gRim);
@@ -377,7 +576,7 @@ function build(){
   const m=anchors.lua;el('path',{class:'deco',d:`M${f(m[0])} ${f(m[1]-32)}A32 32 0 1 1 ${f(m[0])} ${f(m[1]+32)}A41 41 0 0 0 ${f(m[0])} ${f(m[1]-32)}Z`,fill:'#f2eada','fill-opacity':.92},gOuter);
   scatter(PHI0+3*SECT,6).forEach((p,i)=>el('path',{class:'deco',d:drop(p[0],p[1],[9,6,8,5,7,6][i%6]),fill:'#f2eada','fill-opacity':.7},gOuter));
 
-  // the shell: 13 chambers, inner → outer, coloured by domain
+  // the shell: chambers, inner → outer, coloured by domain
   COBENEFITS.forEach((c,k)=>{const dom=DOMAINS[c.domain];c.color=shade(dom.color,(k%2?.05:-.025));
     const ch=chamber(k);anchors[c.id]=ch.anchor;makePiece(gShell,'path',{d:ch.d},c,'shell');});
   makePiece(gShell,'path',{d:eye()},CENTER,'shell');anchors.centro=[C.x,C.y];
@@ -386,7 +585,8 @@ function build(){
 
 /* ---------- state & rendering ---------- */
 const state={lang:'pt',sel:null,mode:'intro',domain:null,hover:null,auto:false};
-try{const l=localStorage.getItem('mandala-lang');if(l==='en'||l==='pt')state.lang=l;}catch(e){}
+const LANGS=['pt','en','es','fr','it','ja'];
+try{const l=localStorage.getItem('mandala-lang');if(LANGS.includes(l))state.lang=l;}catch(e){}
 const L=()=>state.lang, t=k=>UI[L()][k];
 const nameOf=id=>ITEMS[id][L()].name;
 
@@ -417,16 +617,16 @@ function renderPanel(){const p=$('#panel');let h='';
   if(state.mode==='intro'){
     h=`<p class="eyebrow">${t('introEyebrow')}</p><h1>${t('introTitle')}</h1><p class="body">${t('introBody')}</p>
        <div class="row"><button type="button" class="cta" data-act="start">${t('start')}</button><button type="button" class="ghost" data-act="start-sound">${t('startSound')}</button></div>
-       <p class="note">${t('introNote')}</p>`;
+       ${t('introNote')?`<p class="note">${t('introNote')}</p>`:''}`;
   }else if(state.mode==='outro'){
     h=`<p class="eyebrow">${t('outroEyebrow')}</p><h1>${t('outroTitle')}</h1><p class="body">${t('outroBody')}</p>
        <div class="row"><button type="button" class="ghost" data-act="home">${t('back')}</button></div>`;
   }else if(state.mode==='domain'){const d=DOMAINS[state.domain];
     h=`<p class="eyebrow" style="--c:${d.color}"><b>${t('kindDomain')} ${d.n} ${t('of')} 4</b></p><h2>${esc(d[L()].name)}</h2><p class="body">${esc(d[L()].body)}</p>
-       <p class="links-label">${t('inDomain')} <span class="draft">${t('draft')}</span></p><div class="links">${COBENEFITS.filter(c=>c.domain===state.domain).map(c=>chipHTML(c.id)).join('')}</div>
+       <p class="links-label">${t('inDomain')}</p><div class="links">${COBENEFITS.filter(c=>c.domain===state.domain).map(c=>chipHTML(c.id)).join('')}</div>
        <div class="row"><button type="button" class="ghost" data-act="home">${t('back')}</button></div>`;
   }else{const it=ITEMS[state.sel],x=it[L()];let eyebrow;
-    if(it.kind==='cb'){const d=DOMAINS[it.domain];eyebrow=`<b>${t('kindCb')} ${it.index+1} ${t('of')} 13</b><span>${esc(d[L()].name)}</span><span class="draft">${t('draft')}</span>`;}
+    if(it.kind==='cb'){const d=DOMAINS[it.domain];eyebrow=`<b>${t('kindCb')}</b><span>${esc(d[L()].name)}</span>`;}
     else eyebrow=`<b>${it.kind==='center'?t('kindCenter'):t('kindElement')}</b>`;
     h=`<p class="eyebrow" style="--c:${it.color}">${eyebrow}</p>
        <div class="head">${thumbHTML(it.id)}<h2>${esc(x.name)}</h2></div>
@@ -436,9 +636,9 @@ function renderPanel(){const p=$('#panel');let h='';
   p.innerHTML='<div class="panel-inner">'+h+'</div>';}
 
 function renderChrome(){
-  document.documentElement.lang=L()==='pt'?'pt-BR':'en';
+  document.documentElement.lang={pt:'pt-BR',en:'en',es:'es',fr:'fr',it:'it',ja:'ja'}[L()];
   svg.setAttribute('aria-label',t('aria'));
-  $('#lang-pt').setAttribute('aria-pressed',L()==='pt');$('#lang-en').setAttribute('aria-pressed',L()==='en');
+  LANGS.forEach(l=>{const b=$('#lang-'+l);if(b)b.setAttribute('aria-pressed',L()===l);});
   $('#sound').textContent=audio.on?t('soundOn'):t('soundOff');$('#sound').setAttribute('aria-pressed',audio.on);
   $('#views').innerHTML=`<button type="button" class="ghost" data-view="cosmos" aria-pressed="${view==='cosmos'}">${t('viewCosmos')}</button><button type="button" class="ghost" data-view="shell" aria-pressed="${view==='shell'}">${t('viewShell')}</button>`;
   $('#legend').innerHTML=`<span class="legend-label">${t('legend')}</span>`+['nature','economy','climate','social'].map(k=>`<button type="button" class="chip" data-domain="${k}" aria-pressed="${state.mode==='domain'&&state.domain===k}" style="--c:${DOMAINS[k].color}"><i></i>${esc(DOMAINS[k][L()].name)}</button>`).join('');
@@ -484,7 +684,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
     case 'next':stopAuto();go(1);break;
     case 'auto':if(state.auto){stopAuto();}else{startAuto();}renderPanel();break;}
   if(b.id==='sound'){audio.toggle();renderChrome();}
-  if(b.id==='lang-pt'||b.id==='lang-en'){state.lang=b.id.slice(5);try{localStorage.setItem('mandala-lang',state.lang);}catch(err){}renderAll();}
+  if(b.id&&b.id.startsWith('lang-')&&LANGS.includes(b.id.slice(5))){state.lang=b.id.slice(5);try{localStorage.setItem('mandala-lang',state.lang);}catch(err){}renderAll();}
 });
 document.addEventListener('keydown',e=>{if(e.target.closest('input,textarea'))return;
   if(e.key==='Escape')home();
